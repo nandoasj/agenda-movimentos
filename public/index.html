@@ -3,310 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Agenda Unificada dos Movimentos Sociais</title>
-    <!-- Tailwind CSS -->
+    <title>Agenda dos Movimentos Sociais</title>
     <script src='https://cdn.tailwindcss.com'></script>
-    <!-- FullCalendar -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     <style>
-        /* Reset e mobile-first */
-        * {
-            box-sizing: border-box;
+        * { box-sizing: border-box; }
+        html, body { height: 100%; margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
+        
+        /* Header Mobile First */
+        header {
+            min-height: 52px; /* ~50px max */
+            padding: 8px 12px;
         }
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            -webkit-text-size-adjust: 100%;
-        }
-        /* Header leve */
-        .header-wrapper {
-            min-height: 56px;
-            padding: 10px 16px;
-        }
-        .header-title {
-            font-size: 1.25rem;
-        }
-        .header-sub {
-            font-size: 0.75rem;
-        }
-        /* Botões FullCalendar */
-        .fc-button {
-            background-color: #b91c1c !important;
-            border: none !important;
-            color: white !important;
-            padding: 0.4rem 0.8rem !important;
-            border-radius: 0.5rem !important;
-            font-weight: 600 !important;
-            font-size: 0.875rem !important;
-            box-shadow: none !important;
-        }
-        .fc-button:hover {
-            background-color: #991b1b !important;
-        }
-        .fc-button:active {
-            transform: scale(0.95) !important;
-        }
-        .fc-toolbar {
-            gap: 8px !important;
-        }
-        .fc-toolbar-chunk {
-            display: flex !important;
-            flex-wrap: wrap !important;
-            gap: 4px !important;
-        }
-        .fc-header-toolbar {
-            margin-bottom: 8px !important;
-        }
-        /* Modal Mobile */
-        .modal-header {
-            padding: 16px 12px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .form-input {
-            padding: 10px 12px;
-            font-size: 1rem;
-        }
-        .form-label {
-            font-size: 0.9rem;
-            margin-bottom: 4px;
-        }
-        /* Alerta de conflito */
-        .date-occupied-warning {
-            display: none;
-            background-color: #fef3c7;
-            border: 1px solid #fcd34d;
-            color: #92400e;
-            padding: 0.75rem;
-            border-radius: 0.75rem;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-        }
-        .date-occupied-warning.show {
-            display: block;
-        }
-        /* ModalContent */
-        .modal-content {
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 12px;
-        }
+        .header-content { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+        .header-title { font-size: 1.1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 6px; }
+        .header-sub { font-size: 0.7rem; color: #fca5a5; }
+        .btn-nav { background: white; color: #b91c1c; font-weight: 600; font-size: 0.8rem; padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; }
+        .btn-nav:active { transform: scale(0.95); }
+
+        /* Calendário Mobile */
+        .fc { font-size: 0.9rem; }
+        .fc-button { background: #b91c1c !important; color: white !important; border-radius: 6px !important; font-weight: 600 !important; padding: 4px 8px !important; font-size: 0.8rem !important; box-shadow: none !important; }
+        .fc-button:active { transform: scale(0.95) !important; }
+        .fc-toolbar { display: flex; flex-wrap: wrap; gap: 8px !important; }
+        .fc-toolbar-chunk { display: flex; flex-wrap: wrap; gap: 4px; width: 100%; }
+        .fc-header-toolbar { margin-bottom: 6px !important; }
+        .fc-title { font-size: 1rem; font-weight: 700; }
+
+        /* Modal */
+        .modal-backdrop { backdrop-filter: blur(4px); }
+        .modal-header { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1rem; font-weight: 700; color: #1e293b; }
+        .modal-content { padding: 12px; max-height: 85vh; overflow-y: auto; }
+        .form-input { padding: 8px 10px; font-size: 1rem; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 8px; }
+        .btn-submit { background: #b91c1c; color: white; font-weight: 700; padding: 10px 16px; border-radius: 8px; width: 100%; margin-top: 8px; }
+        .btn-cancel { background: #f1f5f9; color: #475569; font-weight: 600; padding: 10px 16px; border-radius: 8px; width: 100%; margin-top: 4px; }
+        .alert-box { background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; padding: 8px; border-radius: 8px; margin-bottom: 12px; font-size: 0.85rem; display: none; }
+        .alert-box.show { display: block; }
+
         /* Footer */
-        footer {
-            padding: 24px 16px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #94a3b8;
-            clear: both;
-        }
-        /* FullCalendar Lista (ListView) - TODOs eventos */
-        .fc-list {
-            border: none !important;
-        }
-        .fc-list-day-cushion {
-            background-color: #f8fafc !important;
-            color: #334155 !important;
-            padding: 10px !important;
-            font-weight: 700 !important;
-            font-size: 0.9rem !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-        }
-        .fc-list-event {
-            background-color: white !important;
-            border-left: 5px solid #b91c1c !important;
-            cursor: pointer !important;
-            transition: none !important;
-            margin-bottom: 4px !important;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
-        }
-        .fc-list-event:hover {
-            background-color: #fef2f2 !important;
-        }
-        .fc-list-event-time {
-            color: #64748b !important;
-            font-size: 0.85rem !important;
-            font-weight: 600 !important;
-            margin-bottom: 4px !important;
-        }
-        .fc-list-event-title {
-            color: #1e293b !important;
-            font-size: 0.95rem !important;
-            font-weight: 500 !important;
-            white-space: normal !important;
-            line-height: 1.5 !important;
-        }
-        .fc-list-event-grid {
-            display: flex !important;
-            flex-direction: column !important;
-            padding: 12px !important;
-        }
-        /* Calendário Mês/Semana - Minimalista */
-        .fc-daygrid-day-top {
-            flex-direction: row !important;
-            align-items: center !important;
-            gap: 4px !important;
-            padding: 4px !important;
-            min-height: 24px !important;
-        }
-        .fc-daygrid-day-number {
-            font-weight: 700 !important;
-            color: #334155 !important;
-            font-size: 0.75rem !important;
-        }
-        .fc-daygrid-event {
-            background-color: #fee2e2 !important;
-            border: 1px solid #fecaca !important;
-            border-radius: 4px !important;
-            padding: 2px 4px !important;
-            font-size: 0.65rem !important;
-            margin: 2px 0 !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            white-space: nowrap !important;
-            color: #b91c1c !important;
-            font-weight: 600 !important;
-        }
-        /* Tooltip no mês/sobre o evento */
-        .fc-daygrid-event {
-            position: relative !important;
-            cursor: pointer !important;
-        }
-        .event-tooltip {
-            display: none;
-            position: absolute;
-            background-color: rgba(0,0,0,0.9);
-            color: white;
-            padding: 4px 6px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            z-index: 100;
-            max-width: 220px;
-            pointer-events: none;
-            white-space: normal;
-            word-wrap: break-word;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        /* eventContent */
-        .day-card {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            padding: 4px;
-        }
-        @media (max-width: 640px) {
-            .header-wrapper {
-                padding: 10px 12px;
-            }
-            .header-title {
-                font-size: 1.1rem;
-            }
-            .header-sub {
-                font-size: 0.7rem;
-            }
-            .fc-button {
-                padding: 0.3rem 0.6rem !important;
-                font-size: 0.8rem !important;
-            }
-            .fc-list-event-grid {
-                padding: 10px !important;
-            }
-            .modal-content {
-                padding: 10px;
-            }
+        footer { text-align: center; padding: 16px; font-size: 0.75rem; color: #94a3b8; clear: both; }
+
+        /* ListView - Cards */
+        .fc-list-event { border-left: 4px solid #b91c1c !important; margin-bottom: 4px !important; }
+        .fc-list-event:hover { background: #fef2f2 !important; }
+        .fc-list-event-time { font-size: 0.8rem; color: #64748b; margin-bottom: 4px; }
+        .fc-list-event-title { font-size: 1rem; color: #1e293b; font-weight: 600; white-space: normal; }
+        .fc-list-event-grid { padding: 10px !important; }
+
+        /* Modo Mês - Minimalista */
+        .fc-daygrid-day-number { font-size: 0.75rem; font-weight: 700; }
+        .fc-daygrid-day-top { gap: 4px; padding: 3px 2px; }
+        .fc-daygrid-event { font-size: 0.65rem; color: #991b1b; background: #fee2e2; border: 1px solid #fecaca; border-radius: 4px; padding: 2px 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 2px 0; }
+
+        @media (min-width: 640px) {
+            .header-content { gap: 12px; }
+            .header-title { font-size: 1.25rem; }
+            .header-sub { font-size: 0.8rem; }
+            .btn-nav { font-size: 0.9rem; }
+            .fc-title { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased">
 
-    <!-- Header Mobile First -->
-    <header class="bg-red-700 text-white shadow-md sticky top-0 z-40 min-h-[56px]">
-        <div class="max-w-5xl mx-auto header-wrapper">
-            <h1 class="header-title font-bold flex items-center gap-2">
-                <span>✊</span> Agenda dos Movimentos
-            </h1>
-            <p class="header-sub opacity-90">Evite conflitos de datas e fortaleça os atos</p>
+    <!-- Header mobile-first (sem sticky para evitar congelamento) -->
+    <header class="bg-red-700 text-white shadow-sm">
+        <div class="max-w-5xl mx-auto header-content">
+            <div>
+                <div class="header-title">✊ Agenda dos Movimentos</div>
+                <div class="header-sub">Evite conflitos de datas e fortaleça os atos</div>
+            </div>
+            <button type="button" id="openCreateModalBtn" class="btn-nav">+ Novo Ato</button>
         </div>
     </header>
 
     <!-- Conteúdo Principal -->
     <main class="max-w-5xl mx-auto px-3 sm:px-4 py-3 sm:py-5">
-        <!-- Caixa do Calendário -->
         <div id="calendar" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"></div>
     </main>
 
-    <!-- Footer Leve -->
-    <footer>
-        <p>&copy; 2024 Agenda dos Movimentos – Code for Social Justice</p>
-    </footer>
+    <!-- Footer -->
+    <footer>&copy; 2024 Agenda dos Movimentos – Code for Social Justice</footer>
 
-    <!-- Modal de Cadastro / Edição -->
-    <div id="eventModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-3 z-50">
-        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl modal-content">
-            <div class="modal-header flex justify-between items-center">
-                <h2 id="modalTitle" class="text-lg font-bold text-slate-900">Cadastrar Novo Ato</h2>
-                <button type="button" id="closeCreateModalBtn" class="text-slate-400 hover:text-slate-600 text-2xl px-1">×</button>
+    <!-- Modal Cadastro -->
+    <div id="eventModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm modal-backdrop hidden flex items-center justify-center p-2 sm:p-3 z-50">
+        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Novo Ato</div>
+                <button type="button" id="closeCreateModalBtn" class="text-2xl px-1 text-slate-400 font-bold">&times;</button>
             </div>
             
-            <div id="dateOccupiedAlert" class="date-occupied-warning">
+            <div id="dateOccupiedAlert" class="alert-box">
                 <strong>⚠️ Já há agendamentos para esta data:</strong>
-                <div id="conflictingEventsList" class="mt-2 ml-2 text-sm space-y-0.5"></div>
+                <div id="conflictingEventsList" class="mt-1 ml-2"></div>
             </div>
 
-            <form id="eventForm" class="space-y-3">
+            <form id="eventForm" class="modal-content">
                 <input type="hidden" id="eventId">
                 <div>
-                    <label class="form-label text-slate-700 font-semibold">Nome do Ato / Evento *</label>
-                    <input type="text" id="title" required placeholder="Ex: Ato em Defesa da Educação" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nome do Ato / Evento *</label>
+                    <input type="text" id="title" required placeholder="Ex: Ato em Defesa da Educação" class="form-input">
                 </div>
                 <div>
-                    <label class="form-label text-slate-700 font-semibold">Movimento / Coletivo Organizador *</label>
-                    <input type="text" id="coletivo" required placeholder="Ex: Frente de Luta de Rua" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Movimento / Coletivo Organizador *</label>
+                    <input type="text" id="coletivo" required placeholder="Ex: Frente de Luta de Rua" class="form-input">
                 </div>
                 <div>
-                    <label class="form-label text-slate-700 font-semibold">Data *</label>
-                    <input type="date" id="date" required class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Data *</label>
+                    <input type="date" id="date" required class="form-input">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="form-label text-slate-700 font-semibold">Início (opcional)</label>
-                        <input type="time" id="time" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="form-label text-slate-700 font-semibold">Término (opcional)</label>
-                        <input type="time" id="endTime" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
-                    </div>
+                    <div><label class="block text-xs font-semibold text-slate-700 mb-1">Início (opcional)</label><input type="time" id="time" class="form-input"></div>
+                    <div><label class="block text-xs font-semibold text-slate-700 mb-1">Término (opcional)</label><input type="time" id="endTime" class="form-input"></div>
                 </div>
                 <div>
-                    <label class="form-label text-slate-700 font-semibold">Local (ex: Praça da Matriz)</label>
-                    <input type="text" id="location" placeholder="Ex: Praça da Matriz" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Local (ex: Praça da Matriz)</label>
+                    <input type="text" id="location" placeholder="Ex: Praça da Matriz" class="form-input">
                 </div>
                 <div>
-                    <label class="form-label text-slate-700 font-semibold">Descrição (opcional)</label>
-                    <textarea id="description" rows="3" placeholder="Detalhes importantes sobre a mobilização..." class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none"></textarea>
-                </div>
-                <div>
-                    <label class="form-label text-slate-700 font-semibold">Link de Divulgação (opcional)</label>
-                    <input type="url" id="link" placeholder="https://..." class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
-                </div>
-                <div class="flex flex-col sm:flex-row justify-end gap-2 pt-2">
-                    <button type="button" id="cancelCreateModalBtn" class="w-full sm:w-auto px-4 py-3 border border-slate-300 rounded-xl text-slate-600 font-semibold hover:bg-slate-50">Cancelar</button>
-                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-red-700 text-white font-bold rounded-xl hover:bg-red-800 shadow-md">Salvar Evento</button>
+                    <button type="button" id="cancelCreateModalBtn" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-submit">Salvar Evento</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal de Detalhes -->
-    <div id="detailsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-3 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl relative">
-            <button type="button" id="closeDetailsXBtn" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-2xl px-1">×</button>
-            <div id="detailsContent" class="space-y-3 mt-1"></div>
-            <div class="mt-5 flex flex-col sm:flex-row justify-between items-center gap-2 pt-3 border-t border-slate-100">
-                <div class="flex gap-2 w-full sm:w-auto">
-                    <button type="button" id="editBtn" class="flex-1 sm:flex-none px-4 py-2 bg-amber-600 text-white text-sm font-bold rounded-xl hover:bg-amber-700">Editar</button>
-                    <button type="button" id="deleteBtn" class="flex-1 sm:flex-none px-4 py-2 bg-slate-700 text-white text-sm font-bold rounded-xl hover:bg-slate-800">Excluir</button>
-                </div>
-                <button type="button" id="closeDetailsBtn" class="w-full sm:w-auto px-4 py-2 bg-slate-200 text-slate-700 text-sm font-bold rounded-xl hover:bg-slate-300">Fechar</button>
+    <!-- Modal Detalhes -->
+    <div id="detailsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm modal-backdrop hidden flex items-center justify-center p-2 sm:p-3 z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl">
+            <div class="modal-header">
+                <button type="button" id="closeDetailsXBtn" class="text-2xl px-1 text-slate-400 font-bold">&times;</button>
+            </div>
+            <div id="detailsContent" class="modal-content text-sm space-y-3 mt-1"></div>
+            <div class="px-4 pb-4 flex flex-col sm:flex-row gap-2 border-t border-slate-100 pt-3">
+                <button type="button" id="editBtn" class="flex-1 bg-amber-600 text-white font-bold py-2.5 rounded-xl hover:bg-amber-700">Editar</button>
+                <button type="button" id="deleteBtn" class="flex-1 bg-slate-700 text-white font-bold py-2.5 rounded-xl hover:bg-slate-800">Excluir</button>
+                <button type="button" id="closeDetailsBtn" class="flex-1 bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl hover:bg-slate-300">Fechar</button>
             </div>
         </div>
     </div>
@@ -322,11 +155,16 @@
             const modalEl = document.getElementById('eventModal');
             const alertEl = document.getElementById('dateOccupiedAlert');
 
-            if (titleEl) titleEl.textContent = 'Cadastrar Novo Ato';
+            if (titleEl) titleEl.textContent = 'Novo Ato';
             if (formEl) formEl.reset();
             if (idEl) idEl.value = '';
             if (modalEl) modalEl.classList.remove('hidden');
             if (alertEl) alertEl.classList.remove('show');
+            if (modalEl.classList.contains('flex')) {
+                modalEl.classList.remove('justify-center', 'items-center');
+                modalEl.classList.add('justify-start', 'items-start');
+                modalEl.style.paddingTop = '100px';
+            }
 
             const dateInput = document.getElementById('date');
             if (dateInput) dateInput.value = '';
@@ -356,7 +194,14 @@
             if (locationInput) locationInput.value = data.location || '';
             if (descriptionInput) descriptionInput.value = data.description || '';
             if (linkInput) linkInput.value = data.link || '';
-            if (modalEl) modalEl.classList.remove('hidden');
+            if (modalEl) {
+                modalEl.classList.remove('hidden');
+                if (modalEl.classList.contains('flex')) {
+                    modalEl.classList.remove('justify-center', 'items-center');
+                    modalEl.classList.add('justify-start', 'items-start');
+                    modalEl.style.paddingTop = '100px';
+                }
+            }
             if (alertEl) alertEl.classList.remove('show');
         }
 
@@ -370,6 +215,11 @@
             if (formEl) formEl.reset();
             if (idEl) idEl.value = '';
             if (alertEl) alertEl.classList.remove('show');
+            if (modalEl.classList.contains('flex')) {
+                modalEl.classList.remove('justify-start', 'items-start');
+                modalEl.classList.add('justify-center', 'items-center');
+                modalEl.style.paddingTop = '';
+            }
 
             const dateInput = document.getElementById('date');
             if (dateInput) dateInput.value = '';
@@ -419,6 +269,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Botões
             const openCreateBtn = document.getElementById('openCreateModalBtn');
             if (openCreateBtn) openCreateBtn.onclick = openModal;
 
@@ -437,15 +288,13 @@
             var calendarEl = document.getElementById('calendar');
             
             calendar = new FullCalendar.Calendar(calendarEl, {
-                // Padrão: ListView com todos os eventos
-                initialView: 'listWeek',
-                // Desativar limitação automática para mostrar todos os eventos
-                eventLimit: false,
+                // Controle de visualização: inicialmente ListView com todos os eventos do backend
+                initialView: 'list',
                 locale: 'pt-br',
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,listWeek'
+                    right: 'dayGridMonth,timeGridWeek,list'
                 },
                 buttonText: {
                     today: 'Hoje',
@@ -453,14 +302,17 @@
                     week: 'Semana',
                     list: 'Todos'
                 },
-                // Carregar todos os eventos da API (sem limite)
                 events: '/api/events',
                 eventTimeFormat: {
                     hour: '2-digit',
                     minute: '2-digit',
                     meridiem: false
                 },
-                // Renderização personalizada para ListView (Cards com descrição completa)
+                eventLimit: false,
+                height: 'auto',
+                dayGridEventMinHeight: 20,
+                dayGridEventMaxHeight: 24,
+                // Renderização customizada para ListView (Cards com título único)
                 eventContent: function(arg) {
                     const props = arg.event.extendedProps;
                     const timeStr = props.time || 'Dia todo';
@@ -473,16 +325,11 @@
                                 <div class="fc-list-event-title">
                                     <span class="text-red-700 font-bold text-xs">${props.coletivo || ''}</span>
                                     <br>${props.title}
-                                    ${props.description ? `<br><span class="block mt-2 text-slate-600">${props.description}</span>` : ''}
                                 </div>
                             </div>
                         `
                     };
                 },
-                // Renderização para Modo Mês (Minimalista)
-                dayGridEventMinHeight: 20,
-                dayGridEventMaxHeight: 24,
-                // Event click
                 eventClick: function(info) {
                     const props = info.event.extendedProps;
                     currentEventData = {
@@ -518,14 +365,21 @@
                             ${horarioTexto ? `<p><strong>⏰ Horário:</strong> ${horarioTexto}</p>` : ''}
                             ${props.location ? `<p><strong>📍 Local:</strong> ${props.location}</p>` : ''}
                         </div>
-                        ${props.description && props.description.trim() !== '' ? `<div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl mt-3 whitespace-pre-wrap">${props.description}</div>` : ''}
+                        ${props.description && props.description.trim() !== '' ? `<div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl mt-3">${props.description}</div>` : ''}
                         ${props.link && props.link.trim() !== '' ? `<div class="mt-3"><a href="${props.link}" target="_blank" class="block text-center bg-red-600 text-white font-bold py-2 rounded-xl hover:bg-red-700 transition">🔗 Link</a></div>` : ''}
                     `;
                     
                     const detailsContentEl = document.getElementById('detailsContent');
                     const detailsModalEl = document.getElementById('detailsModal');
                     if (detailsContentEl) detailsContentEl.innerHTML = html;
-                    if (detailsModalEl) detailsModalEl.classList.remove('hidden');
+                    if (detailsModalEl) {
+                        detailsModalEl.classList.remove('hidden');
+                        if (detailsModalEl.classList.contains('flex')) {
+                            detailsModalEl.classList.remove('justify-center', 'items-center');
+                            detailsModalEl.classList.add('justify-start', 'items-start');
+                            detailsModalEl.style.paddingTop = '100px';
+                        }
+                    }
                 }
             });
             calendar.render();
@@ -618,7 +472,7 @@
                 if (response && response.ok) {
                     alert(id ? 'Evento atualizado!' : 'Ato cadastrado!');
                     closeModal();
-                    if (calendar) calendar.refetchEvents();
+                    calendar && calendar.refetchEvents();
                 } else {
                     let errMessage = 'Não foi possível salvar.';
                     try {
