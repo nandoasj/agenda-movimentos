@@ -28,6 +28,35 @@
             -webkit-box-orient: vertical;
             font-weight: 500;
         }
+        /* Estilo para indicador de data ocupada */
+        .date-occupied-warning {
+            display: none;
+            background-color: #fef3c7;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .date-occupied-warning.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Calendar auto-height */
+        .fc-scroller {
+            overflow-y: hidden !important;
+        }
+        .fc-scrollgrid {
+            overflow: hidden;
+        }
         @media (max-width: 640px) {
             .fc-header-toolbar {
                 flex-direction: column;
@@ -49,7 +78,7 @@
         <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="text-center sm:text-left">
                 <h1 class="text-xl sm:text-2xl font-bold flex items-center justify-center sm:justify-start gap-2">
-                    <span>✊</span> Agenda dos Movimentos
+                    <span>✊</span> Agenda dosMovimentos
                 </h1>
                 <p class="text-xs text-red-100">Evite conflitos de datas e fortaleça os atos</p>
             </div>
@@ -62,16 +91,23 @@
 
     <main class="max-w-5xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <!-- Caixa do Calendário -->
-        <div id="calendar" class="bg-white p-3 sm:p-6 rounded-2xl shadow-sm border border-slate-200"></div>
+        <div id="calendar" class="bg-white p-3 sm:p-6 rounded-2xl shadow-sm border border-slate-200" style="height: auto;"></div>
     </main>
 
     <!-- Modal de Cadastro / Edição -->
     <div id="eventModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-3 z-50">
         <div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex justify-between items-center mb-3">
                 <h2 id="modalTitle" class="text-lg sm:text-xl font-bold text-slate-900">Cadastrar Novo Ato ou Evento</h2>
                 <button type="button" id="closeCreateModalBtn" class="text-slate-400 hover:text-slate-600 text-2xl font-bold px-2">×</button>
             </div>
+            
+            <!-- Alerta de data ocupada -->
+            <div id="dateOccupiedAlert" class="date-occupied-warning">
+                <strong>⚠️ Já há agendamentos para esta data:</strong>
+                <div id="conflictingEventsList" class="mt-2 ml-2"></div>
+            </div>
+
             <form id="eventForm" class="space-y-4">
                 <input type="hidden" id="eventId">
                 <div>
@@ -143,11 +179,17 @@
             const formEl = document.getElementById('eventForm');
             const idEl = document.getElementById('eventId');
             const modalEl = document.getElementById('eventModal');
+            const alertEl = document.getElementById('dateOccupiedAlert');
 
             if (titleEl) titleEl.textContent = 'Cadastrar Novo Ato ou Evento';
             if (formEl) formEl.reset();
             if (idEl) idEl.value = '';
             if (modalEl) modalEl.classList.remove('hidden');
+            if (alertEl) alertEl.classList.remove('show');
+
+            // Limpar data atual para prevenir alertas ao abrir novo
+            const dateInput = document.getElementById('date');
+            if (dateInput) dateInput.value = '';
         }
 
         function openModalForEdit(data) {
@@ -162,6 +204,7 @@
             const descriptionInput = document.getElementById('description');
             const linkInput = document.getElementById('link');
             const modalEl = document.getElementById('eventModal');
+            const alertEl = document.getElementById('dateOccupiedAlert');
 
             if (titleEl) titleEl.textContent = 'Editar Ato ou Evento';
             if (idEl) idEl.value = data.id || '';
@@ -174,16 +217,23 @@
             if (descriptionInput) descriptionInput.value = data.description || '';
             if (linkInput) linkInput.value = data.link || '';
             if (modalEl) modalEl.classList.remove('hidden');
+            if (alertEl) alertEl.classList.remove('show');
         }
 
         function closeModal() {
             const modalEl = document.getElementById('eventModal');
             const formEl = document.getElementById('eventForm');
             const idEl = document.getElementById('eventId');
+            const alertEl = document.getElementById('dateOccupiedAlert');
 
             if (modalEl) modalEl.classList.add('hidden');
             if (formEl) formEl.reset();
             if (idEl) idEl.value = '';
+            if (alertEl) alertEl.classList.remove('show');
+
+            // Limpar campo de data ao fechar
+            const dateInput = document.getElementById('date');
+            if (dateInput) dateInput.value = '';
         }
 
         function closeDetailsModal() {
@@ -191,8 +241,47 @@
             if (detailsModalEl) detailsModalEl.classList.add('hidden');
         }
 
+        // Verifica se há eventos no mesmo dia da data informada
+        function checkDateConflict(selectedDateStr) {
+            if (!selectedDateStr) {
+                const alertEl = document.getElementById('dateOccupiedAlert');
+                if (alertEl) alertEl.classList.remove('show');
+                return;
+            }
+
+            const events = calendar.getEvents();
+            const conflictingEvents = [];
+            
+            // Normalizar dataSelecionada para comparação
+            const dateObj = new Date(selectedDateStr + 'T00:00:00');
+            
+            events.forEach(event => {
+                const evStart = new Date(event.start);
+                evStart.setHours(0, 0, 0, 0);
+                dateObj.setHours(0, 0, 0, 0);
+                
+                if (evStart.getTime() === dateObj.getTime()) {
+                    conflictingEvents.push(event);
+                }
+            });
+
+            const alertEl = document.getElementById('dateOccupiedAlert');
+            const listEl = document.getElementById('conflictingEventsList');
+            
+            if (conflictingEvents.length > 0) {
+                let listHtml = '';
+                conflictingEvents.forEach(ev => {
+                    const props = ev.extendedProps;
+                    listHtml += `<p class="text-sm">• <strong>${props.coletivo || ''}</strong>: ${props.title}</p>`;
+                });
+                listEl.innerHTML = listHtml;
+                alertEl.classList.add('show');
+            } else {
+                alertEl.classList.remove('show');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Vinculando eventos de clique via JavaScript de forma segura
             const openCreateBtn = document.getElementById('openCreateModalBtn');
             if (openCreateBtn) openCreateBtn.onclick = openModal;
 
@@ -211,7 +300,7 @@
             var calendarEl = document.getElementById('calendar');
             
             calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'listWeek',
+                initialView: 'dayGridMonth', // Mantido o padrão asthma
                 locale: 'pt-br',
                 headerToolbar: {
                     left: 'prev,next today',
@@ -224,6 +313,8 @@
                     week: 'Semana',
                     list: 'Lista'
                 },
+                height: 'auto', // ✅ Solução para mostrar todos os eventos na mesma página (sem scroll na área do calendário)
+                dayMaxEventRows: true, // Mostrar todos os eventos, expandindo horizonte se necessário
                 events: '/api/events',
                 eventTimeFormat: {
                     hour: '2-digit',
@@ -307,6 +398,33 @@
                     }
                 };
             }
+
+            // Botão 'Hoje' volta para o mês atual
+            const todayBtn = document.querySelector('.fc-today-button');
+            if (todayBtn) {
+                todayBtn.addEventListener('click', function() {
+                    calendar.today();
+                });
+            }
+        });
+
+        // Vincular campo de data para verificar conflitos em tempo real
+        const dateInput = document.getElementById('date');
+        if (dateInput) {
+            dateInput.addEventListener('change', function(e) {
+                checkDateConflict(e.target.value);
+            });
+        }
+
+        // Limpar alerta ao mudar a data
+        const formInputs = document.querySelectorAll('#eventForm input, #eventForm select, #eventForm textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                if (this.id !== 'date') {
+                    const alertEl = document.getElementById('dateOccupiedAlert');
+                    if (alertEl) alertEl.classList.remove('show');
+                }
+            });
         });
 
         const eventFormEl = document.getElementById('eventForm');
@@ -336,7 +454,7 @@
                     method = 'PUT';
                 }
 
-                const response = await flexFetch(url, method, data); // fallback method helper abaixo
+                const response = await flexFetch(url, method, data);
                 if (response && response.ok) {
                     alert(id ? 'Evento atualizado com sucesso!' : 'Ato cadastrado com sucesso!');
                     closeModal();
