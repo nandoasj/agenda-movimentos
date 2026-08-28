@@ -4,6 +4,474 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Agenda dos Movimentos Sociais</title>
+    <!-- Tailwind CSS -->
+    <script src='https://cdn.tailwindcss.com'></script>
+    <!-- FullCalendar -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <style>
+        * { box-sizing: border-box; }
+        html, body { height: 100%; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        
+        /* Header Mobile First */
+        header {
+            min-height: 60px;
+            padding: 10px 14px;
+        }
+        .header-content { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+        .header-title { font-size: 1.1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 6px; }
+        .header-sub { font-size: 0.75rem; color: #fca5a5; }
+        .btn-nav { background: white; color: #b91c1c; font-weight: 600; font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; }
+        .btn-nav:active { transform: scale(0.95); }
+
+        /* Calendário Mobile */
+        .fc { font-size: 0.9rem; }
+        .fc-button { background: #b91c1c !important; color: white !important; border-radius: 6px !important; font-weight: 600 !important; padding: 4px 8px !important; font-size: 0.8rem !important; box-shadow: none !important; }
+        .fc-button:active { transform: scale(0.95) !important; }
+        .fc-toolbar { display: flex; flex-wrap: wrap; gap: 8px !important; }
+        .fc-toolbar-chunk { display: flex; flex-wrap: wrap; gap: 4px; width: 100%; }
+        .fc-header-toolbar { margin-bottom: 6px !important; }
+        .fc-title { font-size: 1rem; font-weight: 700; }
+
+        /* Modal */
+        .modal-backdrop { backdrop-filter: blur(4px); }
+        .modal-header { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1rem; font-weight: 700; color: #1e293b; }
+        .modal-content { max-height: 85vh; overflow-y: auto; padding: 12px; }
+        .form-input { padding: 8px 10px; font-size: 1rem; width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 8px; }
+        .btn-submit { background: #b91c1c; color: white; font-weight: 700; padding: 10px 16px; border-radius: 8px; width: 100%; margin-top: 8px; }
+        .btn-cancel { background: #f1f5f9; color: #475569; font-weight: 600; padding: 10px 16px; border-radius: 8px; width: 100%; margin-top: 4px; }
+        .alert-box { background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; padding: 8px; border-radius: 8px; margin-bottom: 12px; font-size: 0.85rem; display: none; }
+        .alert-box.show { display: block; }
+
+        /* Footer */
+        footer { text-align: center; padding: 16px; font-size: 0.75rem; color: #94a3b8; clear: both; }
+
+        /* ListView - Cards */
+        .fc-list-event { border-left: 4px solid #b91c1c !important; margin-bottom: 4px !important; }
+        .fc-list-event:hover { background: #fef2f2 !important; }
+        .fc-list-event-time { font-size: 0.8rem; color: #64748b; margin-bottom: 4px; }
+        .fc-list-event-title { font-size: 1rem; color: #1e293b; font-weight: 600; white-space: normal; }
+        .fc-list-event-grid { padding: 10px !important; }
+
+        /* Modo Mês - Minimalista */
+        .fc-daygrid-day-number { font-size: 0.75rem; font-weight: 700; }
+        .fc-daygrid-day-top { gap: 4px; padding: 3px 2px; }
+        .fc-daygrid-event { font-size: 0.65rem; color: #991b1b; background: #fee2e2; border: 1px solid #fecaca; border-radius: 4px; padding: 2px 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 2px 0; }
+
+        /* Scrollbar */
+        .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: #f1f5f9; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        @media (min-width: 640px) {
+            .header-content { gap: 12px; }
+            .header-title { font-size: 1.25rem; }
+            .btn-nav { font-size: 0.9rem; }
+            .fc-title { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased">
+
+    <!-- Header mobile-first -->
+    <header class="bg-red-700 text-white shadow-sm">
+        <div class="max-w-5xl mx-auto header-content">
+            <div>
+                <div class="header-title">✊ Agenda dos Movimentos</div>
+                <div class="header-sub">Evite conflitos de datas e fortaleça os atos</div>
+            </div>
+            <button type="button" id="openCreateModalBtn" class="btn-nav">+ Novo Ato</button>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="max-w-5xl mx-auto px-3 sm:px-4 py-3 sm:py-5">
+        <div id="calendar" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer>&copy; 2024 Agenda dos Movimentos – Code for Social Justice</footer>
+
+    <!-- Modal Cadastro -->
+    <div id="eventModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm modal-backdrop hidden flex items-center justify-center p-2 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Novo Ato</div>
+                <button type="button" id="closeCreateModalBtn" class="text-2xl px-1 text-slate-400 font-bold">&times;</button>
+            </div>
+            
+            <div id="dateOccupiedAlert" class="alert-box">
+                <strong>⚠️ Já há agendamentos para esta data:</strong>
+                <div id="conflictingEventsList" class="mt-1 ml-2"></div>
+            </div>
+
+            <form id="eventForm" class="modal-content">
+                <input type="hidden" id="eventId">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nome do Ato / Evento *</label>
+                    <input type="text" id="title" required placeholder="Ex: Ato em Defesa da Educação" class="form-input">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Movimento / Coletivo Organizador *</label>
+                    <input type="text" id="coletivo" required placeholder="Ex: Frente de Luta de Rua" class="form-input">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Data *</label>
+                    <input type="date" id="date" required class="form-input">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div><label class="block text-xs font-semibold text-slate-700 mb-1">Início (opcional)</label><input type="time" id="time" class="form-input"></div>
+                    <div><label class="block text-xs font-semibold text-slate-700 mb-1">Término (opcional)</label><input type="time" id="endTime" class="form-input"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Local (ex: Praça da Matriz)</label>
+                    <input type="text" id="location" placeholder="Ex: Praça da Matriz" class="form-input">
+                </div>
+                <div>
+                    <button type="button" id="cancelCreateModalBtn" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-submit">Salvar Evento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Detalhes -->
+    <div id="detailsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm modal-backdrop hidden flex items-center justify-center p-2 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl">
+            <div class="modal-header">
+                <button type="button" id="closeDetailsXBtn" class="text-2xl px-1 text-slate-400 font-bold">&times;</button>
+            </div>
+            <div id="detailsContent" class="modal-content text-sm space-y-3 mt-1"></div>
+            <div class="px-4 pb-4 flex flex-col sm:flex-row gap-2 border-t border-slate-100 pt-3">
+                <button type="button" id="editBtn" class="flex-1 bg-amber-600 text-white font-bold py-2.5 rounded-xl hover:bg-amber-700">Editar</button>
+                <button type="button" id="deleteBtn" class="flex-1 bg-slate-700 text-white font-bold py-2.5 rounded-xl hover:bg-slate-800">Excluir</button>
+                <button type="button" id="closeDetailsBtn" class="flex-1 bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl hover:bg-slate-300">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let calendar;
+        let currentEventData = null;
+
+        function openModal() {
+            const titleEl = document.getElementById('modalTitle');
+            const formEl = document.getElementById('eventForm');
+            const idEl = document.getElementById('eventId');
+            const modalEl = document.getElementById('eventModal');
+            const alertEl = document.getElementById('dateOccupiedAlert');
+
+            if (titleEl) titleEl.textContent = 'Novo Ato';
+            if (formEl) formEl.reset();
+            if (idEl) idEl.value = '';
+            if (modalEl) modalEl.classList.remove('hidden');
+
+            const dateInput = document.getElementById('date');
+            if (dateInput) dateInput.value = '';
+        }
+
+        function openModalForEdit(data) {
+            const titleEl = document.getElementById('modalTitle');
+            const idEl = document.getElementById('eventId');
+            const titleInput = document.getElementById('title');
+            const coletivoInput = document.getElementById('coletivo');
+            const dateInput = document.getElementById('date');
+            const timeInput = document.getElementById('time');
+            const endTimeInput = document.getElementById('endTime');
+            const locationInput = document.getElementById('location');
+            const descriptionInput = document.getElementById('description');
+            const linkInput = document.getElementById('link');
+            const modalEl = document.getElementById('eventModal');
+            const alertEl = document.getElementById('dateOccupiedAlert');
+
+            if (titleEl) titleEl.textContent = 'Editar Ato';
+            if (idEl) idEl.value = data.id || '';
+            if (titleInput) titleInput.value = data.title || '';
+            if (coletivoInput) coletivoInput.value = data.coletivo || '';
+            if (dateInput) dateInput.value = data.date || '';
+            if (timeInput) timeInput.value = data.time || '';
+            if (endTimeInput) endTimeInput.value = data.endTime || '';
+            if (locationInput) locationInput.value = data.location || '';
+            if (descriptionInput) descriptionInput.value = data.description || '';
+            if (linkInput) linkInput.value = data.link || '';
+            if (modalEl) modalEl.classList.remove('hidden');
+            if (alertEl) alertEl.classList.remove('show');
+        }
+
+        function closeModal() {
+            const modalEl = document.getElementById('eventModal');
+            const formEl = document.getElementById('eventForm');
+            const idEl = document.getElementById('eventId');
+            const alertEl = document.getElementById('dateOccupiedAlert');
+
+            if (modalEl) modalEl.classList.add('hidden');
+            if (formEl) formEl.reset();
+            if (idEl) idEl.value = '';
+            if (alertEl) alertEl.classList.remove('show');
+
+            const dateInput = document.getElementById('date');
+            if (dateInput) dateInput.value = '';
+        }
+
+        function closeDetailsModal() {
+            const detailsModalEl = document.getElementById('detailsModal');
+            if (detailsModalEl) detailsModalEl.classList.add('hidden');
+        }
+
+        function checkDateConflict(selectedDateStr) {
+            if (!selectedDateStr) {
+                const alertEl = document.getElementById('dateOccupiedAlert');
+                if (alertEl) alertEl.classList.remove('show');
+                return;
+            }
+
+            const events = calendar.getEvents();
+            const conflictingEvents = [];
+            
+            const dateObj = new Date(selectedDateStr + 'T00:00:00');
+            
+            events.forEach(event => {
+                const evStart = new Date(event.start);
+                evStart.setHours(0, 0, 0, 0);
+                dateObj.setHours(0, 0, 0, 0);
+                
+                if (evStart.getTime() === dateObj.getTime()) {
+                    conflictingEvents.push(event);
+                }
+            });
+
+            const alertEl = document.getElementById('dateOccupiedAlert');
+            const listEl = document.getElementById('conflictingEventsList');
+            
+            if (conflictingEvents.length > 0) {
+                let listHtml = '';
+                conflictingEvents.forEach(ev => {
+                    const props = ev.extendedProps;
+                    listHtml += `<p>• ${props.coletivo || ''}: ${props.title}</p>`;
+                });
+                listEl.innerHTML = listHtml;
+                alertEl.classList.add('show');
+            } else {
+                alertEl.classList.remove('show');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Botões
+            const openCreateBtn = document.getElementById('openCreateModalBtn');
+            if (openCreateBtn) openCreateBtn.onclick = openModal;
+
+            const closeCreateBtn = document.getElementById('closeCreateModalBtn');
+            if (closeCreateBtn) closeCreateBtn.onclick = closeModal;
+
+            const cancelCreateBtn = document.getElementById('cancelCreateModalBtn');
+            if (cancelCreateBtn) cancelCreateBtn.onclick = closeModal;
+
+            const closeDetailsXBtn = document.getElementById('closeDetailsXBtn');
+            if (closeDetailsXBtn) closeDetailsXBtn.onclick = closeDetailsModal;
+
+            const closeDetailsBtn = document.getElementById('closeDetailsBtn');
+            if (closeDetailsBtn) closeDetailsBtn.onclick = closeDetailsModal;
+
+            var calendarEl = document.getElementById('calendar');
+            
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'listWeek',
+                locale: 'pt-br',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
+                },
+                buttonText: {
+                    today: 'Hoje',
+                    month: 'Mês',
+                    week: 'Semana',
+                    list: 'Todos'
+                },
+                events: '/api/events',
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    meridiem: false
+                },
+                eventLimit: false,
+                height: 'auto',
+                dayGridEventMinHeight: 20,
+                dayGridEventMaxHeight: 24,
+                // Renderização customizada para ListView
+                eventContent: function(arg) {
+                    const props = arg.event.extendedProps;
+                    const timeStr = props.time || 'Dia todo';
+                    const locationStr = props.location ? `📍 ${props.location}` : '';
+                    
+                    return {
+                        html: `
+                            <div class="fc-list-event-grid">
+                                <div class="fc-list-event-time">${timeStr} ${locationStr}</div>
+                                <div class="fc-list-event-title">
+                                    <span class="text-red-700 font-bold text-xs">${props.coletivo || ''}</span>
+                                    <br>${props.title}
+                                </div>
+                            </div>
+                        `
+                    };
+                },
+                // Renderização para Modo Mês (Minimalista)
+                eventClick: function(info) {
+                    const props = info.event.extendedProps;
+                    currentEventData = {
+                        id: info.event.id,
+                        title: props.title,
+                        coletivo: props.coletivo,
+                        date: info.event.start ? info.event.start.toISOString().split('T')[0] : '',
+                        time: props.time,
+                        endTime: props.endTime,
+                        location: props.location,
+                        description: props.description,
+                        link: props.link
+                    };
+                    
+                    let horarioTexto = '';
+                    if (props.time && props.time.trim() !== '') {
+                        horarioTexto = props.time;
+                        if (props.endTime && props.endTime.trim() !== '') {
+                            horarioTexto += ` às ${props.endTime}`;
+                        }
+                    } else if (props.endTime && props.endTime.trim() !== '') {
+                        horarioTexto = `Até às ${props.endTime}`;
+                    }
+
+                    let html = `
+                        <div class="flex items-center gap-2">
+                            <span class="inline-block bg-red-100 text-red-800 text-xs font-bold px-2.5 py-1 rounded-full">✊ ${props.coletivo}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mt-2">${props.title}</h3>
+                        <hr class="border-slate-100 my-3">
+                        <div class="text-sm space-y-1.5 text-slate-700">
+                            <p><strong>📅 Data:</strong> ${info.event.start ? info.event.start.toLocaleDateString('pt-BR') : ''}</p>
+                            ${horarioTexto ? `<p><strong>⏰ Horário:</strong> ${horarioTexto}</p>` : ''}
+                            ${props.location ? `<p><strong>📍 Local:</strong> ${props.location}</p>` : ''}
+                        </div>
+                        ${props.description && props.description.trim() !== '' ? `<div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl mt-3 whitespace-pre-wrap">${props.description}</div>` : ''}
+                        ${props.link && props.link.trim() !== '' ? `<div class="mt-3"><a href="${props.link}" target="_blank" class="block text-center bg-red-600 text-white font-bold py-2 rounded-xl hover:bg-red-700 transition">🔗 Link</a></div>` : ''}
+                    `;
+                    
+                    const detailsContentEl = document.getElementById('detailsContent');
+                    const detailsModalEl = document.getElementById('detailsModal');
+                    if (detailsContentEl) detailsContentEl.innerHTML = html;
+                    if (detailsModalEl) detailsModalEl.classList.remove('hidden');
+                }
+            });
+            calendar.render();
+
+            // Botões do modal
+            const editBtn = document.getElementById('editBtn');
+            if (editBtn) {
+                editBtn.onclick = function() {
+                    closeDetailsModal();
+                    openModalForEdit(currentEventData);
+                };
+            }
+
+            const deleteBtn = document.getElementById('deleteBtn');
+            if (deleteBtn) {
+                deleteBtn.onclick = async function() {
+                    let senha = prompt('Digite a senha de administração para excluir este evento:');
+                    if (!senha) return;
+
+                    const response = await fetch(`/api/events/${currentEventData.id}`, {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ senha })
+                    });
+
+                    if (response.ok) {
+                        alert('Evento excluído com sucesso!');
+                        closeDetailsModal();
+                        calendar.refetchEvents();
+                    } else {
+                        const errData = await response.json();
+                        alert('Erro: ' + (errData.error || 'Senha incorreta'));
+                    }
+                };
+            }
+        });
+
+        // Vincular campo de data
+        const dateInput = document.getElementById('date');
+        if (dateInput) {
+            dateInput.addEventListener('change', function(e) {
+                checkDateConflict(e.target.value);
+            });
+        }
+
+        const formInputs = document.querySelectorAll('#eventForm input, #eventForm select, #eventForm textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                if (this.id !== 'date') {
+                    const alertEl = document.getElementById('dateOccupiedAlert');
+                    if (alertEl) alertEl.classList.remove('show');
+                }
+            });
+        });
+
+        // Form submit
+        const eventFormEl = document.getElementById('eventForm');
+        if (eventFormEl) {
+            eventFormEl.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const id = document.getElementById('eventId').value;
+                const data = {
+                    title: document.getElementById('title').value,
+                    coletivo: document.getElementById('coletivo').value,
+                    date: document.getElementById('date').value,
+                    time: document.getElementById('time').value,
+                    endTime: document.getElementById('endTime').value,
+                    location: document.getElementById('location').value,
+                    description: document.getElementById('description').value,
+                    link: document.getElementById('link').value
+                };
+
+                let url = '/api/events';
+                let method = 'POST';
+
+                if (id) {
+                    let senha = prompt('Digite a senha de administração para salvar as alterações:');
+                    if (!senha) return;
+                    data.senha = senha;
+                    url = `/api/events/${id}`;
+                    method = 'PUT';
+                }
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response && response.ok) {
+                    alert(id ? 'Evento atualizado!' : 'Ato cadastrado!');
+                    closeModal();
+                    calendar && calendar.refetchEvents();
+                } else {
+                    let errMessage = 'Não foi possível salvar.';
+                    try {
+                        const errData = await response.json();
+                        errMessage = errData.error || errMessage;
+                    } catch(ex) {}
+                    alert('Erro: ' + errMessage);
+                }
+            });
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Agenda dos Movimentos Sociais</title>
     <script src='https://cdn.tailwindcss.com'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     <style>
