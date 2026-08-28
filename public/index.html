@@ -18,66 +18,95 @@
             margin: 0;
             padding: 0;
             -webkit-text-size-adjust: 100%;
-            /* Fix para iOS zoom */
         }
-        /* Header leto */
-        header {
-            height: auto;
-            min-height: 4rem;
+        /* Header leve */
+        .header-wrapper {
+            min-height: 56px;
+            padding: 10px 16px;
         }
-        .header-content {
-            padding: 0.5rem 1rem !important;
-        }
-        h1 {
-            font-size: 1.25rem !important;
-            line-height: 1.2;
+        .header-title {
+            font-size: 1.25rem;
         }
         .header-sub {
-            font-size: 0.75rem !important;
+            font-size: 0.75rem;
         }
-        .btn-nav {
-            padding: 0.5rem 0.75rem !important;
-            font-size: 0.875rem !important;
-            white-space: nowrap;
-        }
-        /* Estilos do FullCalendar */
+        /* Botões FullCalendar */
         .fc-button {
             background-color: #b91c1c !important;
             border: none !important;
             color: white !important;
-            padding: 0.4rem 0.7rem !important;
+            padding: 0.4rem 0.8rem !important;
             border-radius: 0.5rem !important;
             font-weight: 600 !important;
-            font-size: 0.85rem !important;
+            font-size: 0.875rem !important;
             box-shadow: none !important;
-            cursor: pointer !important;
-        }
-        .fc-button:active {
-            transform: scale(0.95) !important;
         }
         .fc-button:hover {
             background-color: #991b1b !important;
         }
+        .fc-button:active {
+            transform: scale(0.95) !important;
+        }
         .fc-toolbar {
-            flex-wrap: wrap !important;
             gap: 8px !important;
-            margin-bottom: 0.75rem !important;
         }
         .fc-toolbar-chunk {
             display: flex !important;
             flex-wrap: wrap !important;
             gap: 4px !important;
-            justify-content: center !important;
-            width: 100% !important;
         }
-        /* Cards na lista (mobile-first) */
+        .fc-header-toolbar {
+            margin-bottom: 8px !important;
+        }
+        /* Modal Mobile */
+        .modal-header {
+            padding: 16px 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .form-input {
+            padding: 10px 12px;
+            font-size: 1rem;
+        }
+        .form-label {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        /* Alerta de conflito */
+        .date-occupied-warning {
+            display: none;
+            background-color: #fef3c7;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        .date-occupied-warning.show {
+            display: block;
+        }
+        /* ModalContent */
+        .modal-content {
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 12px;
+        }
+        /* Footer */
+        footer {
+            padding: 24px 16px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            clear: both;
+        }
+        /* FullCalendar Lista (ListView) - TODOs eventos */
         .fc-list {
             border: none !important;
         }
         .fc-list-day-cushion {
             background-color: #f8fafc !important;
             color: #334155 !important;
-            padding: 0.6rem 0.75rem !important;
+            padding: 10px !important;
             font-weight: 700 !important;
             font-size: 0.9rem !important;
             border-bottom: 1px solid #e2e8f0 !important;
@@ -87,45 +116,37 @@
             border-left: 5px solid #b91c1c !important;
             cursor: pointer !important;
             transition: none !important;
-            border-radius: 0 0 8px 8px !important;
             margin-bottom: 4px !important;
             box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
-            max-width: 100% !important;
         }
         .fc-list-event:hover {
             background-color: #fef2f2 !important;
         }
         .fc-list-event-time {
             color: #64748b !important;
-            font-size: 0.8rem !important;
+            font-size: 0.85rem !important;
             font-weight: 600 !important;
             margin-bottom: 4px !important;
-            display: none !important; /* Removido horário duplicado */
         }
         .fc-list-event-title {
             color: #1e293b !important;
             font-size: 0.95rem !important;
             font-weight: 500 !important;
-            overflow-wrap: anywhere !important;
             white-space: normal !important;
-            line-height: 1.35 !important;
+            line-height: 1.5 !important;
         }
         .fc-list-event-grid {
             display: flex !important;
             flex-direction: column !important;
-            padding: 10px 14px !important;
+            padding: 12px !important;
         }
-        /* Cards no mês (dayGridMonth) */
-        .fc-daygrid-day {
-            min-height: 40px !important;
-            padding: 2px !important;
-            border-radius: 4px !important;
-        }
+        /* Calendário Mês/Semana - Minimalista */
         .fc-daygrid-day-top {
             flex-direction: row !important;
             align-items: center !important;
-            gap: 2px !important;
-            padding: 4px 2px !important;
+            gap: 4px !important;
+            padding: 4px !important;
+            min-height: 24px !important;
         }
         .fc-daygrid-day-number {
             font-weight: 700 !important;
@@ -144,13 +165,11 @@
             white-space: nowrap !important;
             color: #b91c1c !important;
             font-weight: 600 !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 2px !important;
         }
-        /* Tooltip simples no mês */
+        /* Tooltip no mês/sobre o evento */
         .fc-daygrid-event {
             position: relative !important;
+            cursor: pointer !important;
         }
         .event-tooltip {
             display: none;
@@ -167,127 +186,64 @@
             word-wrap: break-word;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        /* Modal Mobile Perfect */
-        .modal-content {
-            max-height: 92vh !important;
-            overflow-y: auto !important;
+        /* eventContent */
+        .day-card {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 4px;
         }
-        .form-input {
-            padding: 0.75rem !important;
-            font-size: 1rem !important;
-        }
-        .btn-primary {
-            background-color: #b91c1c !important;
-            color: white !important;
-            padding: 0.75rem 1rem !important;
-            font-weight: 700 !important;
-            font-size: 1rem !important;
-            border-radius: 0.75rem !important;
-        }
-        .btn-cancel {
-            border-color: #cbd5e1 !important;
-            color: #475569 !important;
-            padding: 0.75rem 1rem !important;
-            font-weight: 600 !important;
-            font-size: 1rem !important;
-            border-radius: 0.75rem !important;
-        }
-        .btn-danger {
-            background-color: #334155 !important;
-            color: white !important;
-            padding: 0.75rem 1rem !important;
-            font-weight: 700 !important;
-            font-size: 1rem !important;
-            border-radius: 0.75rem !important;
-        }
-        .btn-warning {
-            background-color: #d97706 !important;
-            color: white !important;
-            padding: 0.75rem 1rem !important;
-            font-weight: 700 !important;
-            font-size: 1rem !important;
-            border-radius: 0.75rem !important;
-        }
-        /* Alerta de conflito */
-        .date-occupied-warning {
-            display: none;
-            background-color: #fef3c7;
-            border: 1px solid #fcd34d;
-            color: #92400e;
-            padding: 0.6rem !important;
-            border-radius: 0.75rem !important;
-            font-size: 0.85rem !important;
-            margin-bottom: 1rem !important;
-        }
-        .date-occupied-warning.show {
-            display: block;
-        }
-        /* Footer */
-        footer {
-            clear: both;
-        }
-        /* Controles de navegação do calendário */
-        .fc-header-toolbar {
-            flex-direction: column !important;
-            gap: 0.5rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.1rem !important;
+        @media (max-width: 640px) {
+            .header-wrapper {
+                padding: 10px 12px;
+            }
+            .header-title {
+                font-size: 1.1rem;
             }
             .header-sub {
-                font-size: 0.7rem !important;
+                font-size: 0.7rem;
             }
             .fc-button {
                 padding: 0.3rem 0.6rem !important;
-                font-size: 0.75rem !important;
-            }
-            .fc-daygrid-day {
-                min-height: 32px !important;
-                padding: 2px !important;
-            }
-            .fc-daygrid-day-top {
-                padding: 3px 2px !important;
-            }
-            .fc-daygrid-event {
-                font-size: 0.6rem !important;
-                padding: 2px !important;
+                font-size: 0.8rem !important;
             }
             .fc-list-event-grid {
-                padding: 6px 10px !important;
+                padding: 10px !important;
+            }
+            .modal-content {
+                padding: 10px;
             }
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased" style="padding:0;margin:0;-webkit-font-smoothing:antialiased;">
+<body class="bg-slate-100 text-slate-800 antialiased">
 
-    <!-- Header mobile-first e leve -->
-    <header class="bg-red-700 text-white shadow-md sticky top-0 z-40 min-h-[3.5rem]">
-        <div class="max-w-5xl mx-auto px-3 py-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-            <div>
-                <h1 class="text-lg font-bold flex items-center gap-1.5">
-                    <span>✊</span> Agenda dos Movimentos
-                </h1>
-                <p class="text-xs opacity-90">Evite conflitos de datas</p>
-            </div>
-            <button type="button" id="openCreateModalBtn" class="bg-white text-red-700 font-bold px-4 py-2 rounded-lg shadow text-sm active:scale-95">
-                + Novo Ato
-            </button>
+    <!-- Header Mobile First -->
+    <header class="bg-red-700 text-white shadow-md sticky top-0 z-40 min-h-[56px]">
+        <div class="max-w-5xl mx-auto header-wrapper">
+            <h1 class="header-title font-bold flex items-center gap-2">
+                <span>✊</span> Agenda dos Movimentos
+            </h1>
+            <p class="header-sub opacity-90">Evite conflitos de datas e fortaleça os atos</p>
         </div>
     </header>
 
-    <!-- Conteúdo principal -->
+    <!-- Conteúdo Principal -->
     <main class="max-w-5xl mx-auto px-3 sm:px-4 py-3 sm:py-5">
         <!-- Caixa do Calendário -->
         <div id="calendar" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"></div>
     </main>
 
+    <!-- Footer Leve -->
+    <footer>
+        <p>&copy; 2024 Agenda dos Movimentos – Code for Social Justice</p>
+    </footer>
+
     <!-- Modal de Cadastro / Edição -->
     <div id="eventModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-3 z-50">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-4 sm:p-5 shadow-2xl modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h2 id="modalTitle" class="text-lg font-bold text-slate-900">Novo Ato</h2>
+        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl modal-content">
+            <div class="modal-header flex justify-between items-center">
+                <h2 id="modalTitle" class="text-lg font-bold text-slate-900">Cadastrar Novo Ato</h2>
                 <button type="button" id="closeCreateModalBtn" class="text-slate-400 hover:text-slate-600 text-2xl px-1">×</button>
             </div>
             
@@ -299,38 +255,42 @@
             <form id="eventForm" class="space-y-3">
                 <input type="hidden" id="eventId">
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nome do Ato / Evento *</label>
-                    <input type="text" id="title" required placeholder="Ex: Ato em Defesa da Educação" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
+                    <label class="form-label text-slate-700 font-semibold">Nome do Ato / Evento *</label>
+                    <input type="text" id="title" required placeholder="Ex: Ato em Defesa da Educação" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Movimento / Coletivo Organizador *</label>
-                    <input type="text" id="coletivo" required placeholder="Ex: Frente de Luta de Rua" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
+                    <label class="form-label text-slate-700 font-semibold">Movimento / Coletivo Organizador *</label>
+                    <input type="text" id="coletivo" required placeholder="Ex: Frente de Luta de Rua" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Data *</label>
-                    <input type="date" id="date" required class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
+                    <label class="form-label text-slate-700 font-semibold">Data *</label>
+                    <input type="date" id="date" required class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Início (opcional)</label>
-                        <input type="time" id="time" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
+                        <label class="form-label text-slate-700 font-semibold">Início (opcional)</label>
+                        <input type="time" id="time" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Término (opcional)</label>
-                        <input type="time" id="endTime" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
+                        <label class="form-label text-slate-700 font-semibold">Término (opcional)</label>
+                        <input type="time" id="endTime" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Descrição curta (opcional)</label>
-                    <textarea id="description" rows="2" placeholder="Detalhes importantes sobre a mobilização..." class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base"></textarea>
+                    <label class="form-label text-slate-700 font-semibold">Local (ex: Praça da Matriz)</label>
+                    <input type="text" id="location" placeholder="Ex: Praça da Matriz" class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Link de Divulgação (opcional)</label>
-                    <input type="url" id="link" placeholder="https://..." class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
+                    <label class="form-label text-slate-700 font-semibold">Descrição (opcional)</label>
+                    <textarea id="description" rows="3" placeholder="Detalhes importantes sobre a mobilização..." class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none"></textarea>
+                </div>
+                <div>
+                    <label class="form-label text-slate-700 font-semibold">Link de Divulgação (opcional)</label>
+                    <input type="url" id="link" placeholder="https://..." class="w-full form-input border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
                 </div>
                 <div class="flex flex-col sm:flex-row justify-end gap-2 pt-2">
-                    <button type="button" id="cancelCreateModalBtn" class="btn-cancel w-full sm:w-auto">Cancelar</button>
-                    <button type="submit" class="btn-primary w-full sm:w-auto">Salvar</button>
+                    <button type="button" id="cancelCreateModalBtn" class="w-full sm:w-auto px-4 py-3 border border-slate-300 rounded-xl text-slate-600 font-semibold hover:bg-slate-50">Cancelar</button>
+                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-red-700 text-white font-bold rounded-xl hover:bg-red-800 shadow-md">Salvar Evento</button>
                 </div>
             </form>
         </div>
@@ -338,23 +298,18 @@
 
     <!-- Modal de Detalhes -->
     <div id="detailsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-3 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-4 sm:p-5 shadow-2xl relative">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl relative">
             <button type="button" id="closeDetailsXBtn" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-2xl px-1">×</button>
             <div id="detailsContent" class="space-y-3 mt-1"></div>
             <div class="mt-5 flex flex-col sm:flex-row justify-between items-center gap-2 pt-3 border-t border-slate-100">
                 <div class="flex gap-2 w-full sm:w-auto">
-                    <button type="button" id="editBtn" class="btn-warning w-full sm:flex-none">Editar</button>
-                    <button type="button" id="deleteBtn" class="btn-danger w-full sm:flex-none">Excluir</button>
+                    <button type="button" id="editBtn" class="flex-1 sm:flex-none px-4 py-2 bg-amber-600 text-white text-sm font-bold rounded-xl hover:bg-amber-700">Editar</button>
+                    <button type="button" id="deleteBtn" class="flex-1 sm:flex-none px-4 py-2 bg-slate-700 text-white text-sm font-bold rounded-xl hover:bg-slate-800">Excluir</button>
                 </div>
-                <button type="button" id="closeDetailsBtn" class="btn-cancel w-full sm:w-auto">Fechar</button>
+                <button type="button" id="closeDetailsBtn" class="w-full sm:w-auto px-4 py-2 bg-slate-200 text-slate-700 text-sm font-bold rounded-xl hover:bg-slate-300">Fechar</button>
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="text-center text-xs text-slate-400 py-3">
-        <p>&copy; 2024 Agenda dos Movimentos - Code for Social Justice</p>
-    </footer>
 
     <script>
         let calendar;
@@ -367,7 +322,7 @@
             const modalEl = document.getElementById('eventModal');
             const alertEl = document.getElementById('dateOccupiedAlert');
 
-            if (titleEl) titleEl.textContent = 'Novo Ato';
+            if (titleEl) titleEl.textContent = 'Cadastrar Novo Ato';
             if (formEl) formEl.reset();
             if (idEl) idEl.value = '';
             if (modalEl) modalEl.classList.remove('hidden');
@@ -385,6 +340,7 @@
             const dateInput = document.getElementById('date');
             const timeInput = document.getElementById('time');
             const endTimeInput = document.getElementById('endTime');
+            const locationInput = document.getElementById('location');
             const descriptionInput = document.getElementById('description');
             const linkInput = document.getElementById('link');
             const modalEl = document.getElementById('eventModal');
@@ -397,6 +353,7 @@
             if (dateInput) dateInput.value = data.date || '';
             if (timeInput) timeInput.value = data.time || '';
             if (endTimeInput) endTimeInput.value = data.endTime || '';
+            if (locationInput) locationInput.value = data.location || '';
             if (descriptionInput) descriptionInput.value = data.description || '';
             if (linkInput) linkInput.value = data.link || '';
             if (modalEl) modalEl.classList.remove('hidden');
@@ -452,7 +409,7 @@
                 let listHtml = '';
                 conflictingEvents.forEach(ev => {
                     const props = ev.extendedProps;
-                    listHtml += `<p>• ${props.coletivo}: ${props.title}</p>`;
+                    listHtml += `<p>• ${props.coletivo || ''}: ${props.title}</p>`;
                 });
                 listEl.innerHTML = listHtml;
                 alertEl.classList.add('show');
@@ -462,7 +419,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Botões
             const openCreateBtn = document.getElementById('openCreateModalBtn');
             if (openCreateBtn) openCreateBtn.onclick = openModal;
 
@@ -478,11 +434,13 @@
             const closeDetailsBtn = document.getElementById('closeDetailsBtn');
             if (closeDetailsBtn) closeDetailsBtn.onclick = closeDetailsModal;
 
-            // Calendar
             var calendarEl = document.getElementById('calendar');
             
             calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
+                // Padrão: ListView com todos os eventos
+                initialView: 'listWeek',
+                // Desativar limitação automática para mostrar todos os eventos
+                eventLimit: false,
                 locale: 'pt-br',
                 headerToolbar: {
                     left: 'prev,next today',
@@ -495,40 +453,36 @@
                     week: 'Semana',
                     list: 'Todos'
                 },
+                // Carregar todos os eventos da API (sem limite)
                 events: '/api/events',
                 eventTimeFormat: {
                     hour: '2-digit',
                     minute: '2-digit',
-                    meridiem: 'narrow'
+                    meridiem: false
                 },
-                eventLimit: false,
-                height: 'auto',
-                // Display do evento no modo Mês (Cards)
-                dayGridEventMinHeight: 20,
-                dayGridEventMaxHeight: 24,
-                // Renderização customizada
+                // Renderização personalizada para ListView (Cards com descrição completa)
                 eventContent: function(arg) {
                     const props = arg.event.extendedProps;
-                    const coletivo = props.coletivo || '';
-                    const title = props.title || '';
+                    const timeStr = props.time || 'Dia todo';
+                    const locationStr = props.location ? `📍 ${props.location}` : '';
                     
                     return {
                         html: `
-                            <div class="fc-daygrid-event">
-                                <span class="text-red-700 font-bold">✊</span>
-                                <span class="truncate">${coletivo}</span>
+                            <div class="fc-list-event-grid">
+                                <div class="fc-list-event-time">${timeStr} ${locationStr}</div>
+                                <div class="fc-list-event-title">
+                                    <span class="text-red-700 font-bold text-xs">${props.coletivo || ''}</span>
+                                    <br>${props.title}
+                                    ${props.description ? `<br><span class="block mt-2 text-slate-600">${props.description}</span>` : ''}
+                                </div>
                             </div>
-                            <div class="fc-daygrid-event">
-                                <span class="text-slate-800 font-medium">${title}</span>
-                            </div>
-                            ${props.time ? `<div class="event-tooltip">
-                                <strong>${props.title}</strong><br>
-                                ${coletivo}<br>
-                                ${arg.event.start ? arg.event.start.toLocaleDateString('pt-BR') : ''} ${props.time ? ' às ' + props.time : ''}
-                            </div>` : ''}
                         `
                     };
                 },
+                // Renderização para Modo Mês (Minimalista)
+                dayGridEventMinHeight: 20,
+                dayGridEventMaxHeight: 24,
+                // Event click
                 eventClick: function(info) {
                     const props = info.event.extendedProps;
                     currentEventData = {
@@ -538,6 +492,7 @@
                         date: info.event.start ? info.event.start.toISOString().split('T')[0] : '',
                         time: props.time,
                         endTime: props.endTime,
+                        location: props.location,
                         description: props.description,
                         link: props.link
                     };
@@ -561,8 +516,9 @@
                         <div class="text-sm space-y-1.5 text-slate-700">
                             <p><strong>📅 Data:</strong> ${info.event.start ? info.event.start.toLocaleDateString('pt-BR') : ''}</p>
                             ${horarioTexto ? `<p><strong>⏰ Horário:</strong> ${horarioTexto}</p>` : ''}
+                            ${props.location ? `<p><strong>📍 Local:</strong> ${props.location}</p>` : ''}
                         </div>
-                        ${props.description && props.description.trim() !== '' ? `<div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl mt-3"><strong>Sobre:</strong><br>${props.description}</div>` : ''}
+                        ${props.description && props.description.trim() !== '' ? `<div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl mt-3 whitespace-pre-wrap">${props.description}</div>` : ''}
                         ${props.link && props.link.trim() !== '' ? `<div class="mt-3"><a href="${props.link}" target="_blank" class="block text-center bg-red-600 text-white font-bold py-2 rounded-xl hover:bg-red-700 transition">🔗 Link</a></div>` : ''}
                     `;
                     
@@ -637,6 +593,7 @@
                     date: document.getElementById('date').value,
                     time: document.getElementById('time').value,
                     endTime: document.getElementById('endTime').value,
+                    location: document.getElementById('location').value,
                     description: document.getElementById('description').value,
                     link: document.getElementById('link').value
                 };
@@ -661,594 +618,6 @@
                 if (response && response.ok) {
                     alert(id ? 'Evento atualizado!' : 'Ato cadastrado!');
                     closeModal();
-                    calendar && calendar.refetchEvents();
-                } else {
-                    let errMessage = 'Não foi possível salvar.';
-                    try {
-                        const errData = await response.json();
-                        errMessage = errData.error || errMessage;
-                    } catch(ex) {}
-                    alert('Erro: ' + errMessage);
-                }
-            });
-        }
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Unificada dos Movimentos Sociais</title>
-    <!-- Tailwind CSS -->
-    <script src='https://cdn.tailwindcss.com'></script>
-    <!-- FullCalendar -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-    <style>
-        /* estilos de botões do FullCalendar */
-        .fc-button {
-            background-color: #b91c1c !important;
-            border: none !important;
-            color: white !important;
-            padding: 0.5rem 1.1rem !important;
-            border-radius: 0.75rem !important;
-            font-weight: 600 !important;
-            text-transform: none !important;
-            box-shadow: none !important;
-        }
-        .fc-button:hover {
-            background-color: #991b1b !important;
-        }
-        .fc-button:active {
-            transform: scale(0.95) !important;
-        }
-        /* Cards na visualização de lista */
-        .fc-list-table {
-            border: none !important;
-            border-radius: 8px !important;
-        }
-        .fc-list-empty {
-            padding: 2rem !important;
-            text-align: center !important;
-        }
-        .fc-list-day-cushion {
-            background-color: #f8fafc !important;
-            color: #334155 !important;
-            padding: 1rem !important;
-            font-weight: 700 !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-            border-radius: 8px 8px 0 0 !important;
-        }
-        .fc-list-event {
-            background-color: white !important;
-            border-left: 5px solid #b91c1c !important;
-            cursor: pointer !important;
-            transition: all 0.2s !important;
-            border-radius: 0 0 8px 8px !important;
-            margin-bottom: 4px !important;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
-        }
-        .fc-list-event:hover {
-            transform: translateY(-2px) !important;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
-        }
-        .fc-list-event-time {
-            color: #64748b !important;
-            font-size: 0.85rem !important;
-            font-weight: 600 !important;
-            margin-bottom: 4px !important;
-        }
-        .fc-list-event-title {
-            color: #1e293b !important;
-            font-size: 0.95rem !important;
-            font-weight: 500 !important;
-            overflow-wrap: anywhere !important;
-        }
-        .fc-list-event-grid {
-            display: flex !important;
-            flex-direction: column !important;
-            padding: 10px 14px !important;
-        }
-        /* Modo Mês (dayGridMonth) - Cards compactos */
-        .fc-daygrid-event {
-            background-color: #fee2e2 !important;
-            border: 1px solid #fecaca !important;
-            border-radius: 4px !important;
-            padding: 4px 6px !important;
-            font-size: 0.75rem !important;
-            margin: 2px 0 !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            white-space: nowrap !important;
-        }
-        .fc-daygrid-block-event {
-            background-color: #fee2e2 !important;
-            border: 1px solid #fecaca !important;
-            border-radius: 4px !important;
-            padding: 4px 6px !important;
-            font-size: 0.7rem !important;
-            margin: 2px 0 !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            white-space: nowrap !important;
-        }
-        .fc-daygrid-day-top {
-            flex-direction: row !important;
-            align-items: center !important;
-            padding: 6px !important;
-            gap: 6px !important;
-        }
-        .fc-daygrid-day-number {
-            font-weight: 700 !important;
-            color: #334155 !important;
-        }
-        /* Tooltip no modo Mês */
-        .fc-daygrid-day-top:hover .fc-daygrid-event {
-            position: relative !important;
-        }
-        .event-tooltip {
-            display: none;
-            position: absolute;
-            background-color: rgba(0,0,0,0.9);
-            color: white;
-            padding: 6px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            z-index: 100;
-            max-width: 220px;
-            pointer-events: none;
-            white-space: normal;
-            word-wrap: break-word;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-        /* Modal Optimizado para Mobile */
-        .date-occupied-warning {
-            display: none;
-            background-color: #fef3c7;
-            border: 1px solid #fcd34d;
-            color: #92400e;
-            padding: 0.75rem;
-            border-radius: 0.75rem;
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-        .date-occupied-warning.show {
-            display: block;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @media (max-width: 640px) {
-            .fc-header-toolbar {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .fc-toolbar-chunk {
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-            .fc-button {
-                font-size: 0.85rem !important;
-                padding: 0.4rem 0.8rem !important;
-            }
-            .fc-daygrid-day-top {
-                padding: 4px !important;
-            }
-            .fc-daygrid-block-event {
-                font-size: 0.65rem !important;
-            }
-        }
-    </style>
-</head>
-<body class="bg-slate-100 text-slate-800 antialiased">
-
-    <!-- Header otimizado para mobile -->
-    <header class="bg-red-700 text-white shadow-lg sticky top-0 z-40">
-        <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <div class="text-center sm:text-left">
-                <h1 class="text-xl sm:text-2xl font-bold flex items-center justify-center sm:justify-start gap-2">
-                    <span>✊</span> Agenda dos Movimentos
-                </h1>
-                <p class="text-xs text-red-100">Evite conflitos de datas e fortaleça os atos</p>
-            </div>
-            <!-- Botão com chamada explícita para a função global -->
-            <button type="button" id="openCreateModalBtn" class="w-full sm:w-auto bg-white text-red-700 font-bold px-5 py-2.5 rounded-xl shadow hover:bg-red-50 transition active:scale-95 text-sm sm:text-base">
-                + Cadastrar Novo Ato
-            </button>
-        </div>
-    </header>
-
-    <main class="max-w-5xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
-        <!-- Caixa do Calendário -->
-        <div id="calendar" class="bg-white p-2 sm:p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200"></div>
-    </main>
-
-    <!-- Modal de Cadastro / Edição -->
-    <div id="eventModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-3 z-50">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-4 sm:p-5 md:p-6 shadow-2xl max-h-[95vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h2 id="modalTitle" class="text-lg sm:text-xl font-bold text-slate-900">Cadastrar Novo Ato ou Evento</h2>
-                <button type="button" id="closeCreateModalBtn" class="text-slate-400 hover:text-slate-600 text-2xl font-bold px-2">×</button>
-            </div>
-            
-            <!-- Alerta de data ocupada -->
-            <div id="dateOccupiedAlert" class="date-occupied-warning">
-                <strong>⚠️ Já há agendamentos para esta data:</strong>
-                <div id="conflictingEventsList" class="mt-2 ml-2 text-sm space-y-1"></div>
-            </div>
-
-            <form id="eventForm" class="space-y-3 sm:space-y-4">
-                <input type="hidden" id="eventId">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nome do Ato / Evento *</label>
-                    <input type="text" id="title" required placeholder="Ex: Ato em Defesa da Educação" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Movimento / Coletivo Organizador *</label>
-                    <input type="text" id="coletivo" required placeholder="Ex: Frente de Luta de Rua" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Data *</label>
-                    <input type="date" id="date" required class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div class="grid grid-cols-2 gap-2 sm:gap-3">
-                    <div>
-                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">Início</label>
-                        <input type="time" id="time" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                    </div>
-                    <div>
-                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">Término (Opcional)</label>
-                        <input type="time" id="endTime" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Local (Praça, Endereço, etc.)</label>
-                    <input type="text" id="location" placeholder="Ex: Praça da Matriz" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Descrição curta</label>
-                    <textarea id="description" rows="2" placeholder="Detalhes importantes sobre a mobilização..." class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Link de Divulgação (Opcional)</label>
-                    <input type="url" id="link" placeholder="https://instagram.com/p/..." class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div class="flex flex-col sm:flex-row justify-end gap-2 pt-2">
-                    <button type="button" id="cancelCreateModalBtn" class="w-full sm:w-auto px-4 py-2.5 border border-slate-300 rounded-xl text-slate-600 font-semibold hover:bg-slate-50">Cancelar</button>
-                    <button type="submit" class="w-full sm:w-auto px-5 py-2.5 bg-red-700 text-white font-bold rounded-xl hover:bg-red-800 shadow-md">Salvar Evento</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal de Detalhes do Evento -->
-    <div id="detailsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-3 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-4 sm:p-5 md:p-6 shadow-2xl relative">
-            <button type="button" id="closeDetailsXBtn" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-2xl font-bold px-2">×</button>
-            <div id="detailsContent" class="space-y-3 mt-1">
-                <!-- Conteúdo injetado via JS -->
-            </div>
-            <div class="mt-5 sm:mt-6 flex flex-col sm:flex-row justify-between items-center gap-2 pt-3 sm:pt-4 border-t border-slate-100">
-                <div class="flex gap-2 w-full sm:w-auto">
-                    <button type="button" id="editBtn" class="flex-1 sm:flex-none px-4 py-2 bg-amber-600 text-white text-sm font-bold rounded-xl hover:bg-amber-700">Editar</button>
-                    <button type="button" id="deleteBtn" class="flex-1 sm:flex-none px-4 py-2 bg-slate-700 text-white text-sm font-bold rounded-xl hover:bg-slate-800">Excluir</button>
-                </div>
-                <button type="button" id="closeDetailsBtn" class="w-full sm:w-auto px-4 py-2 bg-slate-200 text-slate-700 text-sm font-bold rounded-xl hover:bg-slate-300">Fechar</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let calendar;
-        let currentEventData = null;
-
-        // Funções globais de controle de modais
-        function openModal() {
-            const titleEl = document.getElementById('modalTitle');
-            const formEl = document.getElementById('eventForm');
-            const idEl = document.getElementById('eventId');
-            const modalEl = document.getElementById('eventModal');
-            const alertEl = document.getElementById('dateOccupiedAlert');
-
-            if (titleEl) titleEl.textContent = 'Cadastrar Novo Ato ou Evento';
-            if (formEl) formEl.reset();
-            if (idEl) idEl.value = '';
-            if (modalEl) modalEl.classList.remove('hidden');
-            if (alertEl) alertEl.classList.remove('show');
-
-            const dateInput = document.getElementById('date');
-            if (dateInput) dateInput.value = '';
-        }
-
-        function openModalForEdit(data) {
-            const titleEl = document.getElementById('modalTitle');
-            const idEl = document.getElementById('eventId');
-            const titleInput = document.getElementById('title');
-            const coletivoInput = document.getElementById('coletivo');
-            const dateInput = document.getElementById('date');
-            const timeInput = document.getElementById('time');
-            const endTimeInput = document.getElementById('endTime');
-            const locationInput = document.getElementById('location');
-            const descriptionInput = document.getElementById('description');
-            const linkInput = document.getElementById('link');
-            const modalEl = document.getElementById('eventModal');
-            const alertEl = document.getElementById('dateOccupiedAlert');
-
-            if (titleEl) titleEl.textContent = 'Editar Ato ou Evento';
-            if (idEl) idEl.value = data.id || '';
-            if (titleInput) titleInput.value = data.title || '';
-            if (coletivoInput) coletivoInput.value = data.coletivo || '';
-            if (dateInput) dateInput.value = data.date || '';
-            if (timeInput) timeInput.value = data.time || '';
-            if (endTimeInput) endTimeInput.value = data.endTime || '';
-            if (locationInput) locationInput.value = data.location || '';
-            if (descriptionInput) descriptionInput.value = data.description || '';
-            if (linkInput) linkInput.value = data.link || '';
-            if (modalEl) modalEl.classList.remove('hidden');
-            if (alertEl) alertEl.classList.remove('show');
-        }
-
-        function closeModal() {
-            const modalEl = document.getElementById('eventModal');
-            const formEl = document.getElementById('eventForm');
-            const idEl = document.getElementById('eventId');
-            const alertEl = document.getElementById('dateOccupiedAlert');
-
-            if (modalEl) modalEl.classList.add('hidden');
-            if (formEl) formEl.reset();
-            if (idEl) idEl.value = '';
-            if (alertEl) alertEl.classList.remove('show');
-
-            const dateInput = document.getElementById('date');
-            if (dateInput) dateInput.value = '';
-        }
-
-        function closeDetailsModal() {
-            const detailsModalEl = document.getElementById('detailsModal');
-            if (detailsModalEl) detailsModalEl.classList.add('hidden');
-        }
-
-        // Verifica se há eventos no mesmo dia da data informada
-        function checkDateConflict(selectedDateStr) {
-            if (!selectedDateStr) {
-                const alertEl = document.getElementById('dateOccupiedAlert');
-                if (alertEl) alertEl.classList.remove('show');
-                return;
-            }
-
-            const events = calendar.getEvents();
-            const conflictingEvents = [];
-            
-            const dateObj = new Date(selectedDateStr + 'T00:00:00');
-            
-            events.forEach(event => {
-                const evStart = new Date(event.start);
-                evStart.setHours(0, 0, 0, 0);
-                dateObj.setHours(0, 0, 0, 0);
-                
-                if (evStart.getTime() === dateObj.getTime()) {
-                    conflictingEvents.push(event);
-                }
-            });
-
-            const alertEl = document.getElementById('dateOccupiedAlert');
-            const listEl = document.getElementById('conflictingEventsList');
-            
-            if (conflictingEvents.length > 0) {
-                let listHtml = '';
-                conflictingEvents.forEach(ev => {
-                    const props = ev.extendedProps;
-                    listHtml += `<p>• <strong>${props.coletivo || ''}</strong>: ${props.title}</p>`;
-                });
-                listEl.innerHTML = listHtml;
-                alertEl.classList.add('show');
-            } else {
-                alertEl.classList.remove('show');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const openCreateBtn = document.getElementById('openCreateModalBtn');
-            if (openCreateBtn) openCreateBtn.onclick = openModal;
-
-            const closeCreateBtn = document.getElementById('closeCreateModalBtn');
-            if (closeCreateBtn) closeCreateBtn.onclick = closeModal;
-
-            const cancelCreateBtn = document.getElementById('cancelCreateModalBtn');
-            if (cancelCreateBtn) cancelCreateBtn.onclick = closeModal;
-
-            const closeDetailsXBtn = document.getElementById('closeDetailsXBtn');
-            if (closeDetailsXBtn) closeDetailsXBtn.onclick = closeDetailsModal;
-
-            const closeDetailsBtn = document.getElementById('closeDetailsBtn');
-            if (closeDetailsBtn) closeDetailsBtn.onclick = closeDetailsModal;
-
-            var calendarEl = document.getElementById('calendar');
-            
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                // ListView padrão (modo inicial) - exibe todos os eventos ordenados cronologicamente
-                initialView: 'listWeek',
-                locale: 'pt-br',
-                // Botões do topo
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,listWeek'
-                },
-                buttonText: {
-                    today: 'Hoje',
-                    month: 'Mês',
-                    week: 'Semana',
-                    list: 'Todos'
-                },
-                // Carregar todos os eventos da API (sem limite)
-                events: '/api/events',
-                eventTimeFormat: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    meridiem: false
-                },
-                eventLimit: false, // Desativar limitação automática para mostrar todos os eventos
-                // Customização para renderização de eventos (Cards empilhados)
-                eventContent: function(arg) {
-                    const props = arg.event.extendedProps;
-                    const titleStr = props.title || '';
-                    const coletivoStr = props.coletivo || '';
-                    const timeStr = props.time || '';
-                    const locationStr = props.location || '';
-                    
-                    return {
-                        html: `
-                            <div class="day-card">
-                                <div class="fc-list-event-grid">
-                                    <div class="fc-list-event-time">
-                                        ${timeStr || 'Dia todo'} ${locationStr ? `📍 ${locationStr.substring(0, 20)}${locationStr.length > 20 ? '...' : ''}` : ''}
-                                    </div>
-                                    <div class="fc-list-event-title">
-                                        <span class="text-red-700 font-bold text-xs">✊ ${coletivoStr}</span>
-                                        <br>${titleStr}
-                                    </div>
-                                </div>
-                            </div>
-                        `
-                    };
-                },
-                // Renderização personalizada para modo Mês (Cards compactos com tooltip)
-                dayGridEventMinHeight: 20,
-                dayGridEventMaxHeight: 24,
-                timeGridEventMinHeight: 16,
-                timeGridEventMaxHeight: 24,
-                eventClick: function(info) {
-                    const props = info.event.extendedProps;
-                    currentEventData = {
-                        id: info.event.id,
-                        title: props.title,
-                        coletivo: props.coletivo,
-                        date: info.event.start ? info.event.start.toISOString().split('T')[0] : '',
-                        time: props.time,
-                        endTime: props.endTime,
-                        location: props.location,
-                        description: props.description,
-                        link: props.link
-                    };
-                    
-                    let horarioTexto = '';
-                    if (props.time && props.time.trim() !== '') {
-                        horarioTexto = props.time;
-                        if (props.endTime && props.endTime.trim() !== '') {
-                            horarioTexto += ` às ${props.endTime}`;
-                        }
-                    } else if (props.endTime && props.endTime.trim() !== '') {
-                        horarioTexto = `Até às ${props.endTime}`;
-                    }
-
-                    let html = `
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="inline-block bg-red-100 text-red-800 text-xs font-bold px-2.5 py-1 rounded-full">✊ ${props.coletivo || ''}</span>
-                        </div>
-                        <h3 class="text-lg sm:text-xl font-bold text-slate-900 leading-snug mb-2">${props.title}</h3>
-                        <hr class="border-slate-100 my-3">
-                        <div class="text-sm space-y-2 text-slate-700">
-                            <p class="flex items-center gap-2"><span class="text-slate-500">📅</span> <strong>Data:</strong> ${info.event.start ? info.event.start.toLocaleDateString('pt-BR') : ''}</p>
-                            ${horarioTexto ? `<p class="flex items-center gap-2"><span class="text-slate-500">⏰</span> <strong>Horário:</strong> ${horarioTexto}</p>` : ''}
-                            ${props.location && props.location.trim() !== '' ? `<p class="flex items-center gap-2"><span class="text-slate-500">📍</span> <strong>Local:</strong> ${props.location}</p>` : ''}
-                        </div>
-                        ${props.description && props.description.trim() !== '' ? `<div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 mt-3"><strong>Sobre o ato:</strong><br><span class="whitespace-pre-wrap">${props.description}</span></div>` : ''}
-                        ${props.link && props.link.trim() !== '' ? `<div class="pt-3"><a href="${props.link}" target="_blank" class="block text-sm text-center bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 transition shadow">🔗 Acessar Link de Divulgação</a></div>` : ''}
-                    `;
-                    
-                    const detailsContentEl = document.getElementById('detailsContent');
-                    const detailsModalEl = document.getElementById('detailsModal');
-                    if (detailsContentEl) detailsContentEl.innerHTML = html;
-                    if (detailsModalEl) detailsModalEl.classList.remove('hidden');
-                }
-            });
-            calendar.render();
-
-            const editBtn = document.getElementById('editBtn');
-            if (editBtn) {
-                editBtn.onclick = function() {
-                    closeDetailsModal();
-                    openModalForEdit(currentEventData);
-                };
-            }
-
-            const deleteBtn = document.getElementById('deleteBtn');
-            if (deleteBtn) {
-                deleteBtn.onclick = async function() {
-                    let senha = prompt('Digite a senha de administração para excluir este evento:');
-                    if (!senha) return;
-
-                    const response = await fetch(`/api/events/${currentEventData.id}`, {
-                        method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ senha })
-                    });
-
-                    if (response.ok) {
-                        alert('Evento excluído com sucesso!');
-                        closeDetailsModal();
-                        calendar.refetchEvents();
-                    } else {
-                        const errData = await response.json();
-                        alert('Erro: ' + (errData.error || 'Senha incorreta'));
-                    }
-                };
-            }
-        });
-
-        const dateInput = document.getElementById('date');
-        if (dateInput) {
-            dateInput.addEventListener('change', function(e) {
-                checkDateConflict(e.target.value);
-            });
-        }
-
-        const formInputs = document.querySelectorAll('#eventForm input, #eventForm select, #eventForm textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                if (this.id !== 'date') {
-                    const alertEl = document.getElementById('dateOccupiedAlert');
-                    if (alertEl) alertEl.classList.remove('show');
-                }
-            });
-        });
-
-        const eventFormEl = document.getElementById('eventForm');
-        if (eventFormEl) {
-            eventFormEl.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const id = document.getElementById('eventId').value;
-                const data = {
-                    title: document.getElementById('title').value,
-                    coletivo: document.getElementById('coletivo').value,
-                    date: document.getElementById('date').value,
-                    time: document.getElementById('time').value,
-                    endTime: document.getElementById('endTime').value,
-                    location: document.getElementById('location').value,
-                    description: document.getElementById('description').value,
-                    link: document.getElementById('link').value
-                };
-
-                let url = '/api/events';
-                let method = 'POST';
-
-                if (id) {
-                    let senha = prompt('Digite a senha de administração para salvar as alterações:');
-                    if (!senha) return;
-                    data.senha = senha;
-                    url = `/api/events/${id}`;
-                    method = 'PUT';
-                }
-
-                const response = await flexFetch(url, method, data);
-                if (response && response.ok) {
-                    alert(id ? 'Evento atualizado com sucesso!' : 'Ato cadastrado com sucesso!');
-                    closeModal();
                     if (calendar) calendar.refetchEvents();
                 } else {
                     let errMessage = 'Não foi possível salvar.';
@@ -1258,1098 +627,6 @@
                     } catch(ex) {}
                     alert('Erro: ' + errMessage);
                 }
-            });
-        }
-
-        async function flexFetch(url, method, data) {
-            return await fetch(url, {
-                method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-        }
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Unificada dos Movimentos Sociais</title>
-    <!-- Tailwind CSS -->
-    <script src='https://cdn.tailwindcss.com'></script>
-    <!-- FullCalendar -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-    <style>
-        .fc-button {
-            background-color: #b91c1c !important;
-            border: none !important;
-            color: white !important;
-            padding: 0.5rem 1rem !important;
-            border-radius: 0.75rem !important;
-            font-weight: bold !important;
-            text-transform: none !important;
-        }
-        .fc-button:hover {
-            background-color: #991b1b !important;
-        }
-        .fc-button:active {
-            transform: scale(0.95) !important;
-        }
-        /* Estilos para visualização de lista com Scroll Slower e Máx. 10 eventos */
-        .fc-list {
-            border: none !important;
-            scroll-behavior: smooth !important;
-        }
-        .fc-list-day-cushion {
-            background-color: #f8fafc !important;
-            color: #334155 !important;
-            padding: 0.75rem !important;
-            font-weight: bold !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-        }
-        .fc-list-event {
-            background-color: white !important;
-            border-left: 4px solid #b91c1c !important;
-            cursor: pointer !important;
-            transition: all 0.2s !important;
-            overflow-wrap: break-word !important;
-            word-wrap: break-word !important;
-        }
-        .fc-list-event:hover {
-            background-color: #fef2f2 !important;
-            transform: translateX(4px) !important;
-        }
-        .fc-list-event-time {
-            color: #64748b !important;
-            font-size: 0.85rem !important;
-            font-weight: 500 !important;
-        }
-        .fc-list-event-title {
-            color: #1e293b !important;
-            font-size: 0.95rem !important;
-            overflow: visible !important;
-            white-space: normal !important;
-            word-wrap: break-word !important;
-        }
-        /* Estilos para modo Mês (dayGridMonth) */
-        .day-card {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            padding: 4px;
-        }
-        .fc-daygrid-block-event {
-            background-color: #fee2e2 !important;
-            border: 1px solid #fecaca !important;
-            border-radius: 0.5rem !important;
-            padding: 2px 4px !important;
-            font-size: 0.75rem !important;
-        }
-        .fc-daygrid-day-top {
-            flex-direction: row !important;
-            align-items: center !important;
-            padding: 4px !important;
-        }
-        .fc-daygrid-day-number {
-            font-weight: bold !important;
-            margin-right: auto !important;
-        }
-        /* Tooltip para Mês */
-        .day-card:hover .event-tooltip {
-            display: block !important;
-        }
-        .event-tooltip {
-            display: none;
-            position: absolute;
-            background-color: rgba(0,0,0,0.85);
-            color: white;
-            padding: 6px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            z-index: 100;
-            max-width: 200px;
-            pointer-events: none;
-            white-space: normal;
-            word-wrap: break-word;
-        }
-        /* Modal Optimizado para Mobile */
-        .date-occupied-warning {
-            display: none;
-            background-color: #fef3c7;
-            border: 1px solid #fcd34d;
-            color: #92400e;
-            padding: 0.75rem;
-            border-radius: 0.75rem;
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-        .date-occupied-warning.show {
-            display: block;
-        }
-        @media (max-width: 640px) {
-            .fc-header-toolbar {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .fc-toolbar-chunk {
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-            .fc-button {
-                font-size: 0.85rem !important;
-                padding: 0.4rem 0.8rem !important;
-            }
-            .day-card {
-                gap: 2px;
-            }
-            .fc-daygrid-block-event {
-                font-size: 0.65rem !important;
-            }
-        }
-    </style>
-</head>
-<body class="bg-slate-100 text-slate-800 antialiased">
-
-    <!-- Header otimizado para mobile -->
-    <header class="bg-red-700 text-white shadow-lg sticky top-0 z-40">
-        <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <div class="text-center sm:text-left">
-                <h1 class="text-xl sm:text-2xl font-bold flex items-center justify-center sm:justify-start gap-2">
-                    <span>✊</span> Agenda dos Movimentos
-                </h1>
-                <p class="text-xs text-red-100">Evite conflitos de datas e fortaleça os atos</p>
-            </div>
-            <button type="button" id="openCreateModalBtn" class="w-full sm:w-auto bg-white text-red-700 font-bold px-5 py-2.5 rounded-xl shadow hover:bg-red-50 transition active:scale-95 text-sm sm:text-base">
-                + Cadastrar Novo Ato
-            </button>
-        </div>
-    </header>
-
-    <main class="max-w-5xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
-        <div id="calendar" class="bg-white p-2 sm:p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200"></div>
-    </main>
-
-    <!-- Modal de Cadastro / Edição -->
-    <div id="eventModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-3 z-50">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-4 sm:p-5 md:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h2 id="modalTitle" class="text-lg sm:text-xl font-bold text-slate-900">Cadastrar Novo Ato ou Evento</h2>
-                <button type="button" id="closeCreateModalBtn" class="text-slate-400 hover:text-slate-600 text-2xl font-bold px-2">×</button>
-            </div>
-            
-            <div id="dateOccupiedAlert" class="date-occupied-warning">
-                <strong>⚠️ Já há agendamentos para esta data:</strong>
-                <div id="conflictingEventsList" class="mt-2 ml-2 text-sm space-y-1"></div>
-            </div>
-
-            <form id="eventForm" class="space-y-3 sm:space-y-4">
-                <input type="hidden" id="eventId">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nome do Ato / Evento *</label>
-                    <input type="text" id="title" required placeholder="Ex: Ato em Defesa da Educação" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Movimento / Coletivo Organizador *</label>
-                    <input type="text" id="coletivo" required placeholder="Ex: Frente de Luta de Rua" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Data *</label>
-                    <input type="date" id="date" required class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div class="grid grid-cols-2 gap-2 sm:gap-3">
-                    <div>
-                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">Início</label>
-                        <input type="time" id="time" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                    </div>
-                    <div>
-                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">Término (Opcional)</label>
-                        <input type="time" id="endTime" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Local (Praça, Endereço, etc.)</label>
-                    <input type="text" id="location" placeholder="Ex: Praça da Matriz" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Descrição curta</label>
-                    <textarea id="description" rows="2" placeholder="Detalhes importantes sobre a mobilização..." class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Link de Divulgação (Opcional)</label>
-                    <input type="url" id="link" placeholder="https://instagram.com/p/..." class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div class="flex flex-col sm:flex-row justify-end gap-2 pt-2">
-                    <button type="button" id="cancelCreateModalBtn" class="w-full sm:w-auto px-4 py-2.5 border border-slate-300 rounded-xl text-slate-600 font-semibold hover:bg-slate-50">Cancelar</button>
-                    <button type="submit" class="w-full sm:w-auto px-5 py-2.5 bg-red-700 text-white font-bold rounded-xl hover:bg-red-800 shadow-md">Salvar Evento</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal de Detalhes do Evento -->
-    <div id="detailsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-3 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-4 sm:p-5 md:p-6 shadow-2xl relative">
-            <button type="button" id="closeDetailsXBtn" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-2xl font-bold px-2">×</button>
-            <div id="detailsContent" class="space-y-3 mt-1">
-                <!-- Conteúdo injetado via JS -->
-            </div>
-            <div class="mt-5 sm:mt-6 flex flex-col sm:flex-row justify-between items-center gap-2 pt-3 sm:pt-4 border-t border-slate-100">
-                <div class="flex gap-2 w-full sm:w-auto">
-                    <button type="button" id="editBtn" class="flex-1 sm:flex-none px-4 py-2 bg-amber-600 text-white text-sm font-bold rounded-xl hover:bg-amber-700">Editar</button>
-                    <button type="button" id="deleteBtn" class="flex-1 sm:flex-none px-4 py-2 bg-slate-700 text-white text-sm font-bold rounded-xl hover:bg-slate-800">Excluir</button>
-                </div>
-                <button type="button" id="closeDetailsBtn" class="w-full sm:w-auto px-4 py-2 bg-slate-200 text-slate-700 text-sm font-bold rounded-xl hover:bg-slate-300">Fechar</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let calendar;
-        let currentEventData = null;
-
-        function openModal() {
-            const titleEl = document.getElementById('modalTitle');
-            const formEl = document.getElementById('eventForm');
-            const idEl = document.getElementById('eventId');
-            const modalEl = document.getElementById('eventModal');
-            const alertEl = document.getElementById('dateOccupiedAlert');
-
-            if (titleEl) titleEl.textContent = 'Cadastrar Novo Ato ou Evento';
-            if (formEl) formEl.reset();
-            if (idEl) idEl.value = '';
-            if (modalEl) modalEl.classList.remove('hidden');
-            if (alertEl) alertEl.classList.remove('show');
-
-            const dateInput = document.getElementById('date');
-            if (dateInput) dateInput.value = '';
-        }
-
-        function openModalForEdit(data) {
-            const titleEl = document.getElementById('modalTitle');
-            const idEl = document.getElementById('eventId');
-            const titleInput = document.getElementById('title');
-            const coletivoInput = document.getElementById('coletivo');
-            const dateInput = document.getElementById('date');
-            const timeInput = document.getElementById('time');
-            const endTimeInput = document.getElementById('endTime');
-            const locationInput = document.getElementById('location');
-            const descriptionInput = document.getElementById('description');
-            const linkInput = document.getElementById('link');
-            const modalEl = document.getElementById('eventModal');
-            const alertEl = document.getElementById('dateOccupiedAlert');
-
-            if (titleEl) titleEl.textContent = 'Editar Ato ou Evento';
-            if (idEl) idEl.value = data.id || '';
-            if (titleInput) titleInput.value = data.title || '';
-            if (coletivoInput) coletivoInput.value = data.coletivo || '';
-            if (dateInput) dateInput.value = data.date || '';
-            if (timeInput) timeInput.value = data.time || '';
-            if (endTimeInput) endTimeInput.value = data.endTime || '';
-            if (locationInput) locationInput.value = data.location || '';
-            if (descriptionInput) descriptionInput.value = data.description || '';
-            if (linkInput) linkInput.value = data.link || '';
-            if (modalEl) modalEl.classList.remove('hidden');
-            if (alertEl) alertEl.classList.remove('show');
-        }
-
-        function closeModal() {
-            const modalEl = document.getElementById('eventModal');
-            const formEl = document.getElementById('eventForm');
-            const idEl = document.getElementById('eventId');
-            const alertEl = document.getElementById('dateOccupiedAlert');
-
-            if (modalEl) modalEl.classList.add('hidden');
-            if (formEl) formEl.reset();
-            if (idEl) idEl.value = '';
-            if (alertEl) alertEl.classList.remove('show');
-
-            const dateInput = document.getElementById('date');
-            if (dateInput) dateInput.value = '';
-        }
-
-        function closeDetailsModal() {
-            const detailsModalEl = document.getElementById('detailsModal');
-            if (detailsModalEl) detailsModalEl.classList.add('hidden');
-        }
-
-        function checkDateConflict(selectedDateStr) {
-            if (!selectedDateStr) {
-                const alertEl = document.getElementById('dateOccupiedAlert');
-                if (alertEl) alertEl.classList.remove('show');
-                return;
-            }
-
-            const events = calendar.getEvents();
-            const conflictingEvents = [];
-            
-            const dateObj = new Date(selectedDateStr + 'T00:00:00');
-            
-            events.forEach(event => {
-                const evStart = new Date(event.start);
-                evStart.setHours(0, 0, 0, 0);
-                dateObj.setHours(0, 0, 0, 0);
-                
-                if (evStart.getTime() === dateObj.getTime()) {
-                    conflictingEvents.push(event);
-                }
-            });
-
-            const alertEl = document.getElementById('dateOccupiedAlert');
-            const listEl = document.getElementById('conflictingEventsList');
-            
-            if (conflictingEvents.length > 0) {
-                let listHtml = '';
-                conflictingEvents.forEach(ev => {
-                    const props = ev.extendedProps;
-                    listHtml += `<p>• <strong>${props.coletivo || ''}</strong>: ${props.title}</p>`;
-                });
-                listEl.innerHTML = listHtml;
-                alertEl.classList.add('show');
-            } else {
-                alertEl.classList.remove('show');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const openCreateBtn = document.getElementById('openCreateModalBtn');
-            if (openCreateBtn) openCreateBtn.onclick = openModal;
-
-            const closeCreateBtn = document.getElementById('closeCreateModalBtn');
-            if (closeCreateBtn) closeCreateBtn.onclick = closeModal;
-
-            const cancelCreateBtn = document.getElementById('cancelCreateModalBtn');
-            if (cancelCreateBtn) cancelCreateBtn.onclick = closeModal;
-
-            const closeDetailsXBtn = document.getElementById('closeDetailsXBtn');
-            if (closeDetailsXBtn) closeDetailsXBtn.onclick = closeDetailsModal;
-
-            const closeDetailsBtn = document.getElementById('closeDetailsBtn');
-            if (closeDetailsBtn) closeDetailsBtn.onclick = closeDetailsModal;
-
-            var calendarEl = document.getElementById('calendar');
-            
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                // ListView padrão (modo inicial) - exibe até 10 eventos total
-                initialView: 'listWeek',
-                // Configuração para limitar a 10 eventos no total (fazemos no método custom display)
-                // eventLimit: false, // desativar limitação automática para personalizar
-                locale: 'pt-br',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,listWeek'
-                },
-                buttonText: {
-                    today: 'Hoje',
-                    month: 'Mês',
-                    week: 'Semana',
-                    list: 'Lista'
-                },
-                // Carregar apenas os primeiros 10 eventos para ListView
-                events: function(fetchInfo, successCallback, failureCallback) {
-                    fetch('/api/events')
-                        .then(response => response.json())
-                        .then(data => {
-                            // Ordenar por data e limitar a 10 eventos para ListView
-                            const sorted = data.sort((a, b) => new Date(a.date + 'T' + (a.time || '00:00')).getTime() - new Date(b.date + 'T' + (b.time || '00:00')).getTime());
-                            const limitedToTen = sorted.slice(0, 10);
-                            successCallback(limitedToTen);
-                        })
-                        .catch(err => failureCallback(err));
-                },
-                eventTimeFormat: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    meridiem: false
-                },
-                eventDisplay: 'block', // Display de evento no modo Mês e Semana
-                // Customização para modo Mês (cards compactos)
-                dayGridEventMinHeight: 16,
-                dayGridEventMaxHeight: 24,
-                // Customização para modo Semana (compacto)
-                timeGridEventMinHeight: 16,
-                timeGridEventMaxHeight: 24,
-                eventClick: function(info) {
-                    const props = info.event.extendedProps;
-                    currentEventData = {
-                        id: info.event.id,
-                        title: props.title,
-                        coletivo: props.coletivo,
-                        date: info.event.start ? info.event.start.toISOString().split('T')[0] : '',
-                        time: props.time,
-                        endTime: props.endTime,
-                        location: props.location,
-                        description: props.description,
-                        link: props.link
-                    };
-                    
-                    let horarioTexto = '';
-                    if (props.time && props.time.trim() !== '') {
-                        horarioTexto = props.time;
-                        if (props.endTime && props.endTime.trim() !== '') {
-                            horarioTexto += ` às ${props.endTime}`;
-                        }
-                    } else if (props.endTime && props.endTime.trim() !== '') {
-                        horarioTexto = `Até às ${props.endTime}`;
-                    }
-
-                    let html = `
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="inline-block bg-red-100 text-red-800 text-xs font-bold px-2.5 py-1 rounded-full">✊ ${props.coletivo || ''}</span>
-                        </div>
-                        <h3 class="text-lg sm:text-xl font-bold text-slate-900 leading-snug mb-2">${props.title}</h3>
-                        <hr class="border-slate-100 my-3">
-                        <div class="text-sm space-y-2 text-slate-700">
-                            <p class="flex items-center gap-2"><span class="text-slate-500">📅</span> <strong>Data:</strong> ${info.event.start ? info.event.start.toLocaleDateString('pt-BR') : ''}</p>
-                            ${horarioTexto ? `<p class="flex items-center gap-2"><span class="text-slate-500">⏰</span> <strong>Horário:</strong> ${horarioTexto}</p>` : ''}
-                            ${props.location && props.location.trim() !== '' ? `<p class="flex items-center gap-2"><span class="text-slate-500">📍</span> <strong>Local:</strong> ${props.location}</p>` : ''}
-                        </div>
-                        ${props.description && props.description.trim() !== '' ? `<div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 mt-3"><strong>Sobre o ato:</strong><br><span class="whitespace-pre-wrap">${props.description}</span></div>` : ''}
-                        ${props.link && props.link.trim() !== '' ? `<div class="pt-3"><a href="${props.link}" target="_blank" class="block text-sm text-center bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 transition shadow">🔗 Acessar Link de Divulgação</a></div>` : ''}
-                    `;
-                    
-                    const detailsContentEl = document.getElementById('detailsContent');
-                    const detailsModalEl = document.getElementById('detailsModal');
-                    if (detailsContentEl) detailsContentEl.innerHTML = html;
-                    if (detailsModalEl) detailsModalEl.classList.remove('hidden');
-                },
-                // Renderização customizada para modo Mês/Semana
-                eventContent: function(arg) {
-                    const props = arg.event.extendedProps;
-                    const titleStr = props.title || '';
-                    const coletivoStr = props.coletivo || '';
-                    const timeStr = props.time || '';
-                    const dateStr = arg.event.start ? arg.event.start.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' }) : '';
-                    
-                    // Truncar título para 25 caracteres no modo Mês/Semana
-                    const truncatedTitle = titleStr.length > 25 ? titleStr.substring(0, 22) + '...' : titleStr;
-                    
-                    return {
-                        html: `
-                            <div class="day-card">
-                                <div class="fc-daygrid-block-event" title="${titleStr} ${timeStr ? '(' + timeStr + ')' : ''}">
-                                    <div class="text-red-700 font-bold text-xs">✊ ${coletivoStr}</div>
-                                    <div class="text-slate-800 font-medium text-xs truncate mt-1" title="${titleStr}">${truncatedTitle}</div>
-                                    ${timeStr ? `<div class="text-slate-500 text-[10px]">${timeStr}</div>` : ''}
-                                    ${props.location ? `<div class="text-slate-500 text-[10px] truncate" title="${props.location}">📍 ${props.location.substring(0, 18)}...</div>` : ''}
-                                </div>
-                                ${props.description && props.description.trim() !== '' ? `<div class="event-tooltip">
-                                    <strong>${titleStr}</strong><br>
-                                    ${coletivoStr}<br>
-                                    ${dateStr} ${timeStr ? ' às ' + timeStr : ''}<br>
-                                    ${props.location ? props.location : ''}<br>
-                                    ${props.description.substring(0, 150)}${props.description.length > 150 ? '...' : ''}
-                                </div>` : ''}
-                            </div>
-                        `
-                    };
-                }
-            });
-            calendar.render();
-
-            const editBtn = document.getElementById('editBtn');
-            if (editBtn) {
-                editBtn.onclick = function() {
-                    closeDetailsModal();
-                    openModalForEdit(currentEventData);
-                };
-            }
-
-            const deleteBtn = document.getElementById('deleteBtn');
-            if (deleteBtn) {
-                deleteBtn.onclick = async function() {
-                    let senha = prompt('Digite a senha de administração para excluir este evento:');
-                    if (!senha) return;
-
-                    const response = await fetch(`/api/events/${currentEventData.id}`, {
-                        method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ senha })
-                    });
-
-                    if (response.ok) {
-                        alert('Evento excluído com sucesso!');
-                        closeDetailsModal();
-                        calendar.refetchEvents();
-                    } else {
-                        const errData = await response.json();
-                        alert('Erro: ' + (errData.error || 'Senha incorreta'));
-                    }
-                };
-            }
-        });
-
-        const dateInput = document.getElementById('date');
-        if (dateInput) {
-            dateInput.addEventListener('change', function(e) {
-                checkDateConflict(e.target.value);
-            });
-        }
-
-        const formInputs = document.querySelectorAll('#eventForm input, #eventForm select, #eventForm textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                if (this.id !== 'date') {
-                    const alertEl = document.getElementById('dateOccupiedAlert');
-                    if (alertEl) alertEl.classList.remove('show');
-                }
-            });
-        });
-
-        const eventFormEl = document.getElementById('eventForm');
-        if (eventFormEl) {
-            eventFormEl.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const id = document.getElementById('eventId').value;
-                const data = {
-                    title: document.getElementById('title').value,
-                    coletivo: document.getElementById('coletivo').value,
-                    date: document.getElementById('date').value,
-                    time: document.getElementById('time').value,
-                    endTime: document.getElementById('endTime').value,
-                    location: document.getElementById('location').value,
-                    description: document.getElementById('description').value,
-                    link: document.getElementById('link').value
-                };
-
-                let url = '/api/events';
-                let method = 'POST';
-
-                if (id) {
-                    let senha = prompt('Digite a senha de administração para salvar as alterações:');
-                    if (!senha) return;
-                    data.senha = senha;
-                    url = `/api/events/${id}`;
-                    method = 'PUT';
-                }
-
-                const response = await flexFetch(url, method, data);
-                if (response && response.ok) {
-                    alert(id ? 'Evento atualizado com sucesso!' : 'Ato cadastrado com sucesso!');
-                    closeModal();
-                    if (calendar) calendar.refetchEvents();
-                } else {
-                    let errMessage = 'Não foi possível salvar.';
-                    try {
-                        const errData = await response.json();
-                        errMessage = errData.error || errMessage;
-                    } catch(ex) {}
-                    alert('Erro: ' + errMessage);
-                }
-            });
-        }
-
-        async function flexFetch(url, method, data) {
-            return await fetch(url, {
-                method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-        }
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Unificada dos Movimentos Sociais</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FullCalendar -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-    <style>
-        .fc-button {
-            background-color: #b91c1c !important;
-            border: none !important;
-            color: white !important;
-            padding: 0.5rem 1rem !important;
-            border-radius: 0.75rem !important;
-            font-weight: bold !important;
-            text-transform: none !important;
-        }
-        .fc-button:hover {
-            background-color: #991b1b !important;
-        }
-        .fc-button:active {
-            transform: scale(0.95) !important;
-        }
-        .fc-other-month {
-            opacity: 0.8;
-        }
-        /* Estilos para visualização de lista */
-        .fc-list {
-            border: none !important;
-        }
-        .fc-list-day-cushion {
-            background-color: #f8fafc !important;
-            color: #334155 !important;
-            padding: 0.75rem !important;
-            font-weight: bold !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-        }
-        .fc-list-event {
-            background-color: white !important;
-            border-left: 4px solid #b91c1c !important;
-            cursor: pointer !important;
-            transition: all 0.2s !important;
-        }
-        .fc-list-event:hover {
-            background-color: #fef2f2 !important;
-            transform: translateX(4px) !important;
-        }
-        .fc-list-event-time {
-            color: #64748b !important;
-            font-size: 0.85rem !important;
-        }
-        .fc-list-event-title {
-            color: #1e293b !important;
-            font-size: 0.95rem !important;
-        }
-        /* Modal Optimizado para Mobile */
-        .date-occupied-warning {
-            display: none;
-            background-color: #fef3c7;
-            border: 1px solid #fcd34d;
-            color: #92400e;
-            padding: 0.75rem;
-            border-radius: 0.75rem;
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-        .date-occupied-warning.show {
-            display: block;
-        }
-        .fc-scrollgrid -->
-        .fc-scrollgrid-liquid {
-            height: auto !important;
-        }
-        @media (max-width: 640px) {
-            .fc-header-toolbar {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .fc-toolbar-chunk {
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-            .fc-button {
-                font-size: 0.85rem !important;
-                padding: 0.4rem 0.8rem !important;
-            }
-            .fc-scrollgrid -->
-            .fc-scrollgrid-liquid {
-                max-height: 600px;
-                overflow-y: auto;
-            }
-        }
-    </style>
-</head>
-<body class="bg-slate-100 text-slate-800 antialiased">
-
-    <!-- Header otimizado para mobile -->
-    <header class="bg-red-700 text-white shadow-lg sticky top-0 z-40">
-        <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <div class="text-center sm:text-left">
-                <h1 class="text-xl sm:text-2xl font-bold flex items-center justify-center sm:justify-start gap-2">
-                    <span>✊</span> Agenda dos Movimentos
-                </h1>
-                <p class="text-xs text-red-100">Evite conflitos de datas e fortaleça os atos</p>
-            </div>
-            <!-- Botão com chamada explícita para a função global -->
-            <button type="button" id="openCreateModalBtn" class="w-full sm:w-auto bg-white text-red-700 font-bold px-5 py-2.5 rounded-xl shadow hover:bg-red-50 transition active:scale-95 text-sm sm:text-base">
-                + Cadastrar Novo Ato
-            </button>
-        </div>
-    </header>
-
-    <main class="max-w-5xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
-        <!-- Caixa do Calendário -->
-        <div id="calendar" class="bg-white p-2 sm:p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200"></div>
-    </main>
-
-    <!-- Modal de Cadastro / Edição -->
-    <div id="eventModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-3 z-50">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-4 sm:p-5 md:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h2 id="modalTitle" class="text-lg sm:text-xl font-bold text-slate-900">Cadastrar Novo Ato ou Evento</h2>
-                <button type="button" id="closeCreateModalBtn" class="text-slate-400 hover:text-slate-600 text-2xl font-bold px-2">×</button>
-            </div>
-            
-            <!-- Alerta de data ocupada -->
-            <div id="dateOccupiedAlert" class="date-occupied-warning">
-                <strong>⚠️ Já há agendamentos para esta data:</strong>
-                <div id="conflictingEventsList" class="mt-2 ml-2 text-sm space-y-1"></div>
-            </div>
-
-            <form id="eventForm" class="space-y-3 sm:space-y-4">
-                <input type="hidden" id="eventId">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nome do Ato / Evento *</label>
-                    <input type="text" id="title" required placeholder="Ex: Ato em Defesa da Educação" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Movimento / Coletivo Organizador *</label>
-                    <input type="text" id="coletivo" required placeholder="Ex: Frente de Luta de Rua" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Data *</label>
-                    <input type="date" id="date" required class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div class="grid grid-cols-2 gap-2 sm:gap-3">
-                    <div>
-                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">Início</label>
-                        <input type="time" id="time" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                    </div>
-                    <div>
-                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">Término (Opcional)</label>
-                        <input type="time" id="endTime" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Local (Praça, Endereço, etc.)</label>
-                    <input type="text" id="location" placeholder="Ex: Praça da Matriz" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Descrição curta</label>
-                    <textarea id="description" rows="2" placeholder="Detalhes importantes sobre a mobilização..." class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-1">Link de Divulgação (Opcional)</label>
-                    <input type="url" id="link" placeholder="https://instagram.com/p/..." class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none text-base">
-                </div>
-                <div class="flex flex-col sm:flex-row justify-end gap-2 pt-2">
-                    <button type="button" id="cancelCreateModalBtn" class="w-full sm:w-auto px-4 py-2.5 border border-slate-300 rounded-xl text-slate-600 font-semibold hover:bg-slate-50">Cancelar</button>
-                    <button type="submit" class="w-full sm:w-auto px-5 py-2.5 bg-red-700 text-white font-bold rounded-xl hover:bg-red-800 shadow-md">Salvar Evento</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal de Detalhes do Evento -->
-    <div id="detailsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-3 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-4 sm:p-5 md:p-6 shadow-2xl relative">
-            <button type="button" id="closeDetailsXBtn" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-2xl font-bold px-2">×</button>
-            <div id="detailsContent" class="space-y-3 mt-1">
-                <!-- Conteúdo injetado via JS -->
-            </div>
-            <div class="mt-5 sm:mt-6 flex flex-col sm:flex-row justify-between items-center gap-2 pt-3 sm:pt-4 border-t border-slate-100">
-                <div class="flex gap-2 w-full sm:w-auto">
-                    <button type="button" id="editBtn" class="flex-1 sm:flex-none px-4 py-2 bg-amber-600 text-white text-sm font-bold rounded-xl hover:bg-amber-700">Editar</button>
-                    <button type="button" id="deleteBtn" class="flex-1 sm:flex-none px-4 py-2 bg-slate-700 text-white text-sm font-bold rounded-xl hover:bg-slate-800">Excluir</button>
-                </div>
-                <button type="button" id="closeDetailsBtn" class="w-full sm:w-auto px-4 py-2 bg-slate-200 text-slate-700 text-sm font-bold rounded-xl hover:bg-slate-300">Fechar</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let calendar;
-        let currentEventData = null;
-
-        // Funções globais de controle de modais
-        function openModal() {
-            const titleEl = document.getElementById('modalTitle');
-            const formEl = document.getElementById('eventForm');
-            const idEl = document.getElementById('eventId');
-            const modalEl = document.getElementById('eventModal');
-            const alertEl = document.getElementById('dateOccupiedAlert');
-
-            if (titleEl) titleEl.textContent = 'Cadastrar Novo Ato ou Evento';
-            if (formEl) formEl.reset();
-            if (idEl) idEl.value = '';
-            if (modalEl) modalEl.classList.remove('hidden');
-            if (alertEl) alertEl.classList.remove('show');
-
-            // Limpar data atual para prevenir alertas ao abrir novo
-            const dateInput = document.getElementById('date');
-            if (dateInput) dateInput.value = '';
-        }
-
-        function openModalForEdit(data) {
-            const titleEl = document.getElementById('modalTitle');
-            const idEl = document.getElementById('eventId');
-            const titleInput = document.getElementById('title');
-            const coletivoInput = document.getElementById('coletivo');
-            const dateInput = document.getElementById('date');
-            const timeInput = document.getElementById('time');
-            const endTimeInput = document.getElementById('endTime');
-            const locationInput = document.getElementById('location');
-            const descriptionInput = document.getElementById('description');
-            const linkInput = document.getElementById('link');
-            const modalEl = document.getElementById('eventModal');
-            const alertEl = document.getElementById('dateOccupiedAlert');
-
-            if (titleEl) titleEl.textContent = 'Editar Ato ou Evento';
-            if (idEl) idEl.value = data.id || '';
-            if (titleInput) titleInput.value = data.title || '';
-            if (coletivoInput) coletivoInput.value = data.coletivo || '';
-            if (dateInput) dateInput.value = data.date || '';
-            if (timeInput) timeInput.value = data.time || '';
-            if (endTimeInput) endTimeInput.value = data.endTime || '';
-            if (locationInput) locationInput.value = data.location || '';
-            if (descriptionInput) descriptionInput.value = data.description || '';
-            if (linkInput) linkInput.value = data.link || '';
-            if (modalEl) modalEl.classList.remove('hidden');
-            if (alertEl) alertEl.classList.remove('show');
-        }
-
-        function closeModal() {
-            const modalEl = document.getElementById('eventModal');
-            const formEl = document.getElementById('eventForm');
-            const idEl = document.getElementById('eventId');
-            const alertEl = document.getElementById('dateOccupiedAlert');
-
-            if (modalEl) modalEl.classList.add('hidden');
-            if (formEl) formEl.reset();
-            if (idEl) idEl.value = '';
-            if (alertEl) alertEl.classList.remove('show');
-
-            // Limpar campo de data ao fechar
-            const dateInput = document.getElementById('date');
-            if (dateInput) dateInput.value = '';
-        }
-
-        function closeDetailsModal() {
-            const detailsModalEl = document.getElementById('detailsModal');
-            if (detailsModalEl) detailsModalEl.classList.add('hidden');
-        }
-
-        // Verifica se há eventos no mesmo dia da data informada
-        function checkDateConflict(selectedDateStr) {
-            if (!selectedDateStr) {
-                const alertEl = document.getElementById('dateOccupiedAlert');
-                if (alertEl) alertEl.classList.remove('show');
-                return;
-            }
-
-            const events = calendar.getEvents();
-            const conflictingEvents = [];
-            
-            // Normalizar dataSelecionada para comparação
-            const dateObj = new Date(selectedDateStr + 'T00:00:00');
-            
-            events.forEach(event => {
-                const evStart = new Date(event.start);
-                evStart.setHours(0, 0, 0, 0);
-                dateObj.setHours(0, 0, 0, 0);
-                
-                if (evStart.getTime() === dateObj.getTime()) {
-                    conflictingEvents.push(event);
-                }
-            });
-
-            const alertEl = document.getElementById('dateOccupiedAlert');
-            const listEl = document.getElementById('conflictingEventsList');
-            
-            if (conflictingEvents.length > 0) {
-                let listHtml = '';
-                conflictingEvents.forEach(ev => {
-                    const props = ev.extendedProps;
-                    listHtml += `<p>• <strong>${props.coletivo || ''}</strong>: ${props.title}</p>`;
-                });
-                listEl.innerHTML = listHtml;
-                alertEl.classList.add('show');
-            } else {
-                alertEl.classList.remove('show');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Vinculando eventos de clique via JavaScript
-            const openCreateBtn = document.getElementById('openCreateModalBtn');
-            if (openCreateBtn) openCreateBtn.onclick = openModal;
-
-            const closeCreateBtn = document.getElementById('closeCreateModalBtn');
-            if (closeCreateBtn) closeCreateBtn.onclick = closeModal;
-
-            const cancelCreateBtn = document.getElementById('cancelCreateModalBtn');
-            if (cancelCreateBtn) cancelCreateBtn.onclick = closeModal;
-
-            const closeDetailsXBtn = document.getElementById('closeDetailsXBtn');
-            if (closeDetailsXBtn) closeDetailsXBtn.onclick = closeDetailsModal;
-
-            const closeDetailsBtn = document.getElementById('closeDetailsBtn');
-            if (closeDetailsBtn) closeDetailsBtn.onclick = closeDetailsModal;
-
-            var calendarEl = document.getElementById('calendar');
-            
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                // USAR listWeek para mostrar eventos das próximas semanas (padrão visível na página inicial)
-                initialView: 'listWeek',
-                // Configuração de eventos limitados (máximo 10 por dia na visualização de mês)
-                eventLimit: 10,
-                locale: 'pt-br',
-                // Botões do topo
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,listWeek'
-                },
-                buttonText: {
-                    today: 'Hoje',
-                    month: 'Mês',
-                    week: 'Semana',
-                    list: 'Lista'
-                },
-                // Eventos vindos da API
-                events: '/api/events',
-                eventTimeFormat: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    meridiem: false
-                },
-                eventClick: function(info) {
-                    const props = info.event.extendedProps;
-                    currentEventData = {
-                        id: info.event.id,
-                        title: props.title,
-                        coletivo: props.coletivo,
-                        date: info.event.start ? info.event.start.toISOString().split('T')[0] : '',
-                        time: props.time,
-                        endTime: props.endTime,
-                        location: props.location,
-                        description: props.description,
-                        link: props.link
-                    };
-                    
-                    let horarioTexto = '';
-                    if (props.time && props.time.trim() !== '') {
-                        horarioTexto = props.time;
-                        if (props.endTime && props.endTime.trim() !== '') {
-                            horarioTexto += ` às ${props.endTime}`;
-                        }
-                    } else if (props.endTime && props.endTime.trim() !== '') {
-                        horarioTexto = `Até às ${props.endTime}`;
-                    }
-
-                    let html = `
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="inline-block bg-red-100 text-red-800 text-xs font-bold px-2.5 py-1 rounded-full">✊ ${props.coletivo || ''}</span>
-                        </div>
-                        <h3 class="text-lg sm:text-xl font-bold text-slate-900 leading-snug mb-2">${props.title}</h3>
-                        <hr class="border-slate-100 my-3">
-                        <div class="text-sm space-y-2 text-slate-700">
-                            <p class="flex items-center gap-2"><span class="text-slate-500">📅</span> <strong>Data:</strong> ${info.event.start ? info.event.start.toLocaleDateString('pt-BR') : ''}</p>
-                            ${horarioTexto ? `<p class="flex items-center gap-2"><span class="text-slate-500">⏰</span> <strong>Horário:</strong> ${horarioTexto}</p>` : ''}
-                            ${props.location && props.location.trim() !== '' ? `<p class="flex items-center gap-2"><span class="text-slate-500">📍</span> <strong>Local:</strong> ${props.location}</p>` : ''}
-                        </div>
-                        ${props.description && props.description.trim() !== '' ? `<div class="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 mt-3"><strong>Sobre o ato:</strong><br><span class="whitespace-pre-wrap">${props.description}</span></div>` : ''}
-                        ${props.link && props.link.trim() !== '' ? `<div class="pt-3"><a href="${props.link}" target="_blank" class="block text-sm text-center bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 transition shadow">🔗 Acessar Link de Divulgação</a></div>` : ''}
-                    `;
-                    
-                    const detailsContentEl = document.getElementById('detailsContent');
-                    const detailsModalEl = document.getElementById('detailsModal');
-                    if (detailsContentEl) detailsContentEl.innerHTML = html;
-                    if (detailsModalEl) detailsModalEl.classList.remove('hidden');
-                }
-            });
-            calendar.render();
-
-            const editBtn = document.getElementById('editBtn');
-            if (editBtn) {
-                editBtn.onclick = function() {
-                    closeDetailsModal();
-                    openModalForEdit(currentEventData);
-                };
-            }
-
-            const deleteBtn = document.getElementById('deleteBtn');
-            if (deleteBtn) {
-                deleteBtn.onclick = async function() {
-                    let senha = prompt('Digite a senha de administração para excluir este evento:');
-                    if (!senha) return;
-
-                    const response = await fetch(`/api/events/${currentEventData.id}`, {
-                        method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ senha })
-                    });
-
-                    if (response.ok) {
-                        alert('Evento excluído com sucesso!');
-                        closeDetailsModal();
-                        calendar.refetchEvents();
-                    } else {
-                        const errData = await response.json();
-                        alert('Erro: ' + (errData.error || 'Senha incorreta'));
-                    }
-                };
-            }
-        });
-
-        // Vincular campo de data para verificar conflitos em tempo real
-        const dateInput = document.getElementById('date');
-        if (dateInput) {
-            dateInput.addEventListener('change', function(e) {
-                checkDateConflict(e.target.value);
-            });
-        }
-
-        // Limpar alerta ao mudar qualquer campo do formulário
-        const formInputs = document.querySelectorAll('#eventForm input, #eventForm select, #eventForm textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                if (this.id !== 'date') {
-                    const alertEl = document.getElementById('dateOccupiedAlert');
-                    if (alertEl) alertEl.classList.remove('show');
-                }
-            });
-        });
-
-        const eventFormEl = document.getElementById('eventForm');
-        if (eventFormEl) {
-            eventFormEl.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const id = document.getElementById('eventId').value;
-                const data = {
-                    title: document.getElementById('title').value,
-                    coletivo: document.getElementById('coletivo').value,
-                    date: document.getElementById('date').value,
-                    time: document.getElementById('time').value,
-                    endTime: document.getElementById('endTime').value,
-                    location: document.getElementById('location').value,
-                    description: document.getElementById('description').value,
-                    link: document.getElementById('link').value
-                };
-
-                let url = '/api/events';
-                let method = 'POST';
-
-                if (id) {
-                    let senha = prompt('Digite a senha de administração para salvar as alterações:');
-                    if (!senha) return;
-                    data.senha = senha;
-                    url = `/api/events/${id}`;
-                    method = 'PUT';
-                }
-
-                const response = await flexFetch(url, method, data);
-                if (response && response.ok) {
-                    alert(id ? 'Evento atualizado com sucesso!' : 'Ato cadastrado com sucesso!');
-                    closeModal();
-                    if (calendar) calendar.refetchEvents();
-                } else {
-                    let errMessage = 'Não foi possível salvar.';
-                    try {
-                        const errData = await response.json();
-                        errMessage = errData.error || errMessage;
-                    } catch(ex) {}
-                    alert('Erro: ' + errMessage);
-                }
-            });
-        }
-
-        async function flexFetch(url, method, data) {
-            return await fetch(url, {
-                method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
             });
         }
     </script>
